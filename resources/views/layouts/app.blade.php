@@ -158,10 +158,54 @@
 
                 <!-- Desktop Auth Buttons -->
                 <div class="hidden lg:flex items-center space-x-3">
-                    <a href="/login" class="px-4 py-2 text-sm font-medium text-dark-300 hover:text-white transition-colors">Sign In</a>
-                    <a href="/register" class="px-5 py-2.5 text-sm font-semibold bg-gradient-to-r from-primary-600 to-purple-600 hover:from-primary-500 hover:to-purple-500 text-white rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 transition-all">
-                        Get Started
-                    </a>
+                    @guest
+                        <a href="/login" class="px-4 py-2 text-sm font-medium text-dark-300 hover:text-white transition-colors">Sign In</a>
+                        <a href="/register" class="px-5 py-2.5 text-sm font-semibold bg-gradient-to-r from-primary-600 to-purple-600 hover:from-primary-500 hover:to-purple-500 text-white rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 transition-all">
+                            Get Started
+                        </a>
+                    @endguest
+                    @auth
+                        <div x-data="{ open: false }" class="relative">
+                            <button @click="open = !open" class="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-dark-800/50 transition-all">
+                                <div class="w-8 h-8 bg-gradient-to-br from-primary-500 to-purple-600 rounded-full flex items-center justify-center text-xs font-bold text-white">
+                                    {{ substr(Auth::user()->name, 0, 1) }}
+                                </div>
+                                <span class="text-sm font-medium text-dark-200 max-w-[100px] truncate">{{ Auth::user()->name }}</span>
+                                <svg class="w-4 h-4 text-dark-400" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div x-show="open" @click.away="open = false" x-cloak
+                                 x-transition:enter="transition ease-out duration-150"
+                                 x-transition:enter-start="opacity-0 scale-95 -translate-y-1"
+                                 x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                                 class="absolute right-0 mt-2 w-56 glass-card rounded-xl shadow-2xl shadow-black/40 overflow-hidden py-2">
+                                <div class="px-4 py-3 border-b border-dark-700/50">
+                                    <p class="text-sm font-medium text-white truncate">{{ Auth::user()->name }}</p>
+                                    <p class="text-xs text-dark-400 truncate">{{ Auth::user()->email }}</p>
+                                </div>
+                                <a href="/dashboard" class="flex items-center gap-3 px-4 py-2.5 text-sm text-dark-300 hover:text-white hover:bg-dark-800/50 transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                                    Dashboard
+                                </a>
+                                <a href="/dashboard#history" class="flex items-center gap-3 px-4 py-2.5 text-sm text-dark-300 hover:text-white hover:bg-dark-800/50 transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    Watch History
+                                </a>
+                                <a href="/dashboard#bookmarks" class="flex items-center gap-3 px-4 py-2.5 text-sm text-dark-300 hover:text-white hover:bg-dark-800/50 transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+                                    Bookmarks
+                                </a>
+                                <div class="border-t border-dark-700/50 mt-1 pt-1">
+                                    <form method="POST" action="/logout">
+                                        @csrf
+                                        <button type="submit" class="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-red-400 hover:text-red-300 hover:bg-dark-800/50 transition-colors">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                                            Sign Out
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    @endauth
                 </div>
 
                 <!-- Mobile Menu Button -->
@@ -193,8 +237,26 @@
                 <a href="#faq" @click="mobileOpen = false" class="block px-4 py-3 text-sm font-medium text-dark-300 hover:text-white hover:bg-dark-800 rounded-lg transition-colors">FAQ</a>
                 <a href="#contact" @click="mobileOpen = false" class="block px-4 py-3 text-sm font-medium text-dark-300 hover:text-white hover:bg-dark-800 rounded-lg transition-colors">Contact</a>
                 <div class="pt-4 border-t border-dark-700/50 space-y-2">
-                    <a href="/login" class="block px-4 py-3 text-sm font-medium text-dark-300 hover:text-white hover:bg-dark-800 rounded-lg transition-colors text-center">Sign In</a>
-                    <a href="/register" class="block px-4 py-3 text-sm font-semibold bg-gradient-to-r from-primary-600 to-purple-600 text-white rounded-xl text-center shadow-lg shadow-primary-500/25">Get Started</a>
+                    @guest
+                        <a href="/login" class="block px-4 py-3 text-sm font-medium text-dark-300 hover:text-white hover:bg-dark-800 rounded-lg transition-colors text-center">Sign In</a>
+                        <a href="/register" class="block px-4 py-3 text-sm font-semibold bg-gradient-to-r from-primary-600 to-purple-600 text-white rounded-xl text-center shadow-lg shadow-primary-500/25">Get Started</a>
+                    @endguest
+                    @auth
+                        <div class="px-4 py-3 flex items-center gap-3">
+                            <div class="w-8 h-8 bg-gradient-to-br from-primary-500 to-purple-600 rounded-full flex items-center justify-center text-xs font-bold text-white">
+                                {{ substr(Auth::user()->name, 0, 1) }}
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-sm font-medium text-white truncate">{{ Auth::user()->name }}</p>
+                                <p class="text-xs text-dark-400 truncate">{{ Auth::user()->email }}</p>
+                            </div>
+                        </div>
+                        <a href="/dashboard" @click="mobileOpen = false" class="block px-4 py-3 text-sm font-medium text-dark-300 hover:text-white hover:bg-dark-800 rounded-lg transition-colors">Dashboard</a>
+                        <form method="POST" action="/logout">
+                            @csrf
+                            <button type="submit" class="block w-full px-4 py-3 text-sm font-medium text-red-400 hover:text-red-300 hover:bg-dark-800 rounded-lg transition-colors text-left">Sign Out</button>
+                        </form>
+                    @endauth
                 </div>
             </div>
         </div>
