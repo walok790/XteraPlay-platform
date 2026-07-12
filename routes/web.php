@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Admin\AdminAuthController;
 use Illuminate\Support\Facades\Route;
 
 // Landing Page
@@ -30,4 +31,25 @@ Route::middleware('auth')->group(function () {
     Route::get('/bookmarks', fn() => view('bookmarks'))->name('bookmarks');
     Route::get('/history', fn() => view('history'))->name('history');
     Route::get('/support', fn() => view('support'))->name('support');
+});
+
+// Admin Auth
+Route::prefix('admin')->group(function () {
+    Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
+    Route::post('/login', [AdminAuthController::class, 'login']);
+});
+
+// Admin Protected Routes
+Route::prefix('admin')->middleware(\App\Http\Middleware\AdminAuth::class)->group(function () {
+    Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+    Route::get('/dashboard', fn() => view('admin.dashboard'))->name('admin.dashboard');
+    Route::get('/users', fn() => view('admin.users'))->name('admin.users');
+    Route::get('/subscriptions', fn() => view('admin.subscriptions'))->name('admin.subscriptions');
+    Route::get('/coupons', fn() => view('admin.coupons'))->name('admin.coupons');
+    Route::get('/reviews', fn() => view('admin.reviews'))->name('admin.reviews');
+    Route::get('/support', fn() => view('admin.support'))->name('admin.support');
+    Route::get('/messages', fn() => view('admin.messages'))->name('admin.messages');
+    Route::get('/currencies', fn() => view('admin.currencies'))->name('admin.currencies');
+    Route::get('/settings', fn() => view('admin.settings'))->name('admin.settings');
+    Route::get('/system', fn() => view('admin.system'))->name('admin.system');
 });

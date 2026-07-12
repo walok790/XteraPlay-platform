@@ -45,19 +45,19 @@
                 </div>
 
                 <!-- Center Navigation (Desktop) -->
-                <div class="hidden md:flex items-center space-x-8">
+                <div class="hidden md:flex items-center space-x-4 lg:space-x-6">
                     @auth
-                        <a href="{{ url('/home') }}" class="text-gray-300 hover:text-white transition text-sm font-medium">Home</a>
+                        <a href="{{ url('/home') }}" class="text-gray-300 hover:text-white transition text-xs lg:text-sm font-medium">Home</a>
                     @else
-                        <a href="{{ url('/') }}" class="text-gray-300 hover:text-white transition text-sm font-medium">Home</a>
+                        <a href="{{ url('/') }}" class="text-gray-300 hover:text-white transition text-xs lg:text-sm font-medium">Home</a>
                     @endauth
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="text-gray-300 hover:text-white transition text-sm font-medium">Dashboard</a>
-                        <a href="{{ url('/bookmarks') }}" class="text-gray-300 hover:text-white transition text-sm font-medium">Bookmarks</a>
-                        <a href="{{ url('/history') }}" class="text-gray-300 hover:text-white transition text-sm font-medium">History</a>
+                        <a href="{{ url('/dashboard') }}" class="text-gray-300 hover:text-white transition text-xs lg:text-sm font-medium">Dashboard</a>
+                        <a href="{{ url('/bookmarks') }}" class="hidden lg:inline-block text-gray-300 hover:text-white transition text-xs lg:text-sm font-medium">Bookmarks</a>
+                        <a href="{{ url('/history') }}" class="hidden lg:inline-block text-gray-300 hover:text-white transition text-xs lg:text-sm font-medium">History</a>
                     @endauth
-                    <a href="{{ url('/subscription') }}" class="text-gray-300 hover:text-white transition text-sm font-medium">Subscription</a>
-                    <a href="{{ url('/contact') }}" class="text-gray-300 hover:text-white transition text-sm font-medium">Contact</a>
+                    <a href="{{ url('/subscription') }}" class="text-gray-300 hover:text-white transition text-xs lg:text-sm font-medium">Subscription</a>
+                    <a href="{{ url('/contact') }}" class="hidden lg:inline-block text-gray-300 hover:text-white transition text-xs lg:text-sm font-medium">Contact</a>
                 </div>
 
                 <!-- Right Side -->
@@ -187,7 +187,7 @@
 
         <!-- Mobile Menu -->
         <div x-show="mobileOpen" x-transition class="md:hidden bg-[#1a1a1f] border-t border-[#2a2a30]" style="display: none;">
-            <div class="px-4 py-4 space-y-2">
+            <div class="px-4 py-4 space-y-1">
                 @auth
                     <a href="{{ url('/home') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">Home</a>
                 @else
@@ -200,14 +200,17 @@
                 @endauth
                 <a href="{{ url('/subscription') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">Subscription</a>
                 <a href="{{ url('/contact') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">Contact</a>
+                @auth
+                    <a href="{{ url('/support') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">Support</a>
+                @endauth
                 @guest
-                    <div class="pt-4 border-t border-[#2a2a30] space-y-2">
+                    <div class="pt-4 border-t border-[#2a2a30] space-y-1">
                         <a href="{{ url('/login') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">Sign In</a>
                         <a href="{{ url('/register') }}" class="block px-3 py-2 text-center bg-gradient-to-r from-indigo-500 to-violet-600 text-white rounded-lg text-sm font-medium">Get Started</a>
                     </div>
                 @endguest
                 @auth
-                    <div class="pt-4 border-t border-[#2a2a30] space-y-2">
+                    <div class="pt-4 border-t border-[#2a2a30] space-y-1">
                         <a href="{{ url('/profile') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">My Profile</a>
                         <a href="{{ url('/subscription') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">Upgrade Premium</a>
                         <form method="POST" action="{{ url('/logout') }}">
@@ -227,8 +230,8 @@
 
     <!-- Footer -->
     <footer class="bg-[#111113] border-t border-[#2a2a30] mt-auto">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Brand -->
                 <div>
                     <a href="{{ url('/') }}" class="flex items-center space-x-2 mb-4">

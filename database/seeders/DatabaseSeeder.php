@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -20,13 +21,22 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // Admin User
+        // Regular Admin User (user table)
         User::updateOrCreate(
             ['email' => 'admin@xteraplay.com'],
             [
                 'name' => 'Admin',
                 'password' => Hash::make('admin1234'),
                 'email_verified_at' => now(),
+            ]
+        );
+
+        // Admin Panel User
+        Admin::updateOrCreate(
+            ['email' => 'admin@xteraplay.com'],
+            [
+                'name' => 'Admin',
+                'password' => Hash::make('admin1234'),
             ]
         );
     }
