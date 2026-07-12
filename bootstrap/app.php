@@ -11,7 +11,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->append(\App\Http\Middleware\RedirectIfNotInstalled::class);
+        // Prepend so the installer redirect runs BEFORE session/csrf middleware,
+        // which would otherwise try to touch the DB before it's set up.
+        $middleware->prepend(\App\Http\Middleware\RedirectIfNotInstalled::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

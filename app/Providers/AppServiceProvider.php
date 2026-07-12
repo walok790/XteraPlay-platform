@@ -10,7 +10,19 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //
+        // Safety net for the installer: if the app hasn't been installed yet
+        // (no lockfile), force file-based session/cache and mysql as the DB
+        // driver so the installer wizard can always boot — even if the user's
+        // .env is missing values or has stale defaults from Laravel 12's
+        // sqlite-first configuration. Once installed, this block is skipped
+        // and normal .env values apply.
+        if (! file_exists(storage_path('app/installed.lock'))) {
+            config([
+                'session.driver' => 'file',
+                'cache.default' => 'file',
+                'database.default' => env('DB_CONNECTION', 'mysql'),
+            ]);
+        }
     }
 
     public function boot(): void
