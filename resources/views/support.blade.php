@@ -3,72 +3,70 @@
 @section('title', 'Support - XteraPlay')
 
 @section('content')
-<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12" x-data="{ showForm: false }">
-    <!-- Header -->
-    <div class="flex items-center justify-between mb-8">
-        <h1 class="text-3xl font-bold text-white">Support Tickets</h1>
-        <button @click="showForm = !showForm" class="px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-violet-600 text-white text-sm font-medium rounded-lg hover:from-indigo-600 hover:to-violet-700 transition">
-            <span x-show="!showForm">New Ticket</span>
-            <span x-show="showForm" style="display: none;">Cancel</span>
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-10" x-data="{ showForm: false }">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 sm:mb-8">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">Support Tickets</h1>
+            <p class="text-sm text-slate-600 mt-1">Get help from our team.</p>
+        </div>
+        <button @click="showForm = !showForm" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-sm shadow-blue-500/25 transition self-start sm:self-auto flex items-center gap-1.5">
+            <svg class="w-4 h-4" x-show="!showForm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <svg class="w-4 h-4" x-show="showForm" x-cloak fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            <span x-text="showForm ? 'Cancel' : 'New Ticket'"></span>
         </button>
     </div>
 
-
     <!-- New Ticket Form -->
-    <div x-show="showForm" x-transition class="bg-[#1a1a1f] border border-[#2a2a30] rounded-2xl p-6 mb-8" style="display: none;">
-        <h3 class="text-lg font-semibold text-white mb-4">Create New Ticket</h3>
+    <div x-show="showForm" x-cloak x-transition class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 mb-6">
+        <h3 class="text-base sm:text-lg font-semibold text-slate-900 mb-4">Create New Ticket</h3>
         <form class="space-y-4">
             <div>
-                <label class="block text-sm text-gray-400 mb-2">Subject</label>
-                <input type="text" placeholder="Brief description of your issue" class="w-full px-4 py-3 bg-[#111113] border border-[#2a2a30] rounded-lg text-white text-sm placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition">
+                <label class="block text-sm font-medium text-slate-700 mb-1.5">Subject</label>
+                <input type="text" placeholder="Brief description of your issue" class="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition">
             </div>
             <div>
-                <label class="block text-sm text-gray-400 mb-2">Category</label>
-                <select class="w-full px-4 py-3 bg-[#111113] border border-[#2a2a30] rounded-lg text-white text-sm focus:outline-none focus:border-indigo-500 transition">
-                    <option value="" class="bg-[#111113]">Select a category</option>
-                    <option value="bug" class="bg-[#111113]">Bug</option>
-                    <option value="feature" class="bg-[#111113]">Feature Request</option>
-                    <option value="account" class="bg-[#111113]">Account</option>
-                    <option value="billing" class="bg-[#111113]">Billing</option>
-                    <option value="other" class="bg-[#111113]">Other</option>
+                <label class="block text-sm font-medium text-slate-700 mb-1.5">Category</label>
+                <select class="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition">
+                    <option>Select a category</option>
+                    <option>Bug Report</option>
+                    <option>Feature Request</option>
+                    <option>Account</option>
+                    <option>Billing</option>
+                    <option>Other</option>
                 </select>
             </div>
             <div>
-                <label class="block text-sm text-gray-400 mb-2">Message</label>
-                <textarea rows="4" placeholder="Describe your issue in detail..." class="w-full px-4 py-3 bg-[#111113] border border-[#2a2a30] rounded-lg text-white text-sm placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition resize-none"></textarea>
+                <label class="block text-sm font-medium text-slate-700 mb-1.5">Message</label>
+                <textarea rows="4" placeholder="Describe your issue in detail..." class="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition resize-none"></textarea>
             </div>
-            <button type="submit" class="px-6 py-2.5 bg-gradient-to-r from-indigo-500 to-violet-600 text-white text-sm font-medium rounded-lg hover:from-indigo-600 hover:to-violet-700 transition">
-                Submit Ticket
-            </button>
+            <button type="submit" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg shadow-sm shadow-blue-500/25 transition">Submit Ticket</button>
         </form>
     </div>
 
-
     <!-- Ticket List -->
-    <div class="space-y-4">
-        <!-- Sample Ticket 1 -->
-        <div class="bg-[#1a1a1f] border border-[#2a2a30] rounded-xl p-5">
-            <div class="flex items-center justify-between mb-2">
-                <h4 class="text-sm font-medium text-white">Video not loading after paste</h4>
-                <span class="px-2.5 py-1 bg-amber-500/10 text-amber-400 text-xs font-medium rounded-full">Pending</span>
+    <div class="space-y-3 sm:space-y-4">
+        <div class="bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-md transition">
+            <div class="flex items-start justify-between gap-3 mb-2">
+                <h4 class="text-sm sm:text-base font-semibold text-slate-900">Video not loading after paste</h4>
+                <span class="px-2.5 py-1 bg-amber-100 text-amber-700 text-xs font-medium rounded-full whitespace-nowrap">Pending</span>
             </div>
-            <p class="text-xs text-gray-400 mb-3">I pasted a valid TeraBox link but the video player shows a blank screen...</p>
-            <div class="flex items-center space-x-4 text-xs text-gray-500">
-                <span>Category: Bug</span>
-                <span>Created: Jan 12, 2025</span>
+            <p class="text-sm text-slate-600 mb-3">I pasted a valid TeraBox link but the video player shows a blank screen. Tried multiple browsers...</p>
+            <div class="flex items-center gap-3 text-xs text-slate-500">
+                <span>Bug Report</span>
+                <span class="w-1 h-1 bg-slate-400 rounded-full"></span>
+                <span>Jan 12, 2025</span>
             </div>
         </div>
-
-        <!-- Sample Ticket 2 -->
-        <div class="bg-[#1a1a1f] border border-[#2a2a30] rounded-xl p-5">
-            <div class="flex items-center justify-between mb-2">
-                <h4 class="text-sm font-medium text-white">Request: Dark mode toggle</h4>
-                <span class="px-2.5 py-1 bg-green-500/10 text-green-400 text-xs font-medium rounded-full">Resolved</span>
+        <div class="bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-md transition">
+            <div class="flex items-start justify-between gap-3 mb-2">
+                <h4 class="text-sm sm:text-base font-semibold text-slate-900">Request: Dark mode toggle</h4>
+                <span class="px-2.5 py-1 bg-emerald-100 text-emerald-700 text-xs font-medium rounded-full whitespace-nowrap">Resolved</span>
             </div>
-            <p class="text-xs text-gray-400 mb-3">Would be great to have a light/dark mode toggle option in settings...</p>
-            <div class="flex items-center space-x-4 text-xs text-gray-500">
-                <span>Category: Feature Request</span>
-                <span>Created: Jan 8, 2025</span>
+            <p class="text-sm text-slate-600 mb-3">Would be great to have a light/dark mode toggle option in the settings for late-night viewing.</p>
+            <div class="flex items-center gap-3 text-xs text-slate-500">
+                <span>Feature Request</span>
+                <span class="w-1 h-1 bg-slate-400 rounded-full"></span>
+                <span>Jan 8, 2025</span>
             </div>
         </div>
     </div>

@@ -3,25 +3,23 @@
 @section('title', 'My Bookmarks - XteraPlay')
 
 @section('content')
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <!-- Header -->
-    <div class="mb-8">
-        <h1 class="text-3xl font-bold text-white">My Bookmarks</h1>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-10">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 sm:mb-8">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">My Bookmarks</h1>
+            <p class="text-sm text-slate-600 mt-1">Videos you've saved for later.</p>
+        </div>
+        <a href="{{ url('/home') }}" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-sm shadow-blue-500/25 transition self-start sm:self-auto">Search Videos</a>
     </div>
 
-    <!-- Empty State -->
-    <div class="bg-[#1a1a1f] border border-[#2a2a30] rounded-2xl p-12 text-center">
-        <div class="w-16 h-16 bg-[#2a2a30] rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
-            </svg>
+    <div class="bg-white border border-slate-200 rounded-2xl p-8 sm:p-12 md:p-16 text-center">
+        <div class="w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
         </div>
-        <h3 class="text-lg font-semibold text-white mb-2">No bookmarks yet</h3>
-        <p class="text-gray-400 text-sm mb-6">Start bookmarking videos to see them here</p>
-        <a href="{{ url('/home') }}" class="inline-flex items-center px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-violet-600 text-white text-sm font-medium rounded-lg hover:from-indigo-600 hover:to-violet-700 transition">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-            </svg>
+        <h3 class="text-lg font-semibold text-slate-900 mb-2">No bookmarks yet</h3>
+        <p class="text-sm text-slate-600 mb-6 max-w-xs mx-auto">Start bookmarking videos to see them here for easy access.</p>
+        <a href="{{ url('/home') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg shadow-sm shadow-blue-500/25 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
             Search Videos
         </a>
     </div>

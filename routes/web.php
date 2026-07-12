@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/bookmarks', fn() => view('bookmarks'))->name('bookmarks');
     Route::get('/history', fn() => view('history'))->name('history');
     Route::get('/support', fn() => view('support'))->name('support');
+    Route::get('/transactions', fn() => view('transactions'))->name('transactions');
+    Route::get('/profile', fn() => view('profile'))->name('profile');
 });
 
 // ============ ADMIN AUTH ============

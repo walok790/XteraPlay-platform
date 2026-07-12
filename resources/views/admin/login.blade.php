@@ -3,53 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - XteraPlay</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Admin Login · XteraPlay</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Inter', sans-serif; }</style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Inter', system-ui, sans-serif; }</style>
 </head>
-<body class="bg-[#111113] text-white min-h-screen flex items-center justify-center px-4">
-
+<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50 min-h-screen flex items-center justify-center px-4 py-8">
     <div class="w-full max-w-md">
-        <!-- Logo -->
-        <div class="text-center mb-8">
-            <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-lg shadow-blue-500/5">
+            <!-- Logo -->
+            <div class="flex justify-center mb-6">
+                <a href="{{ url('/') }}" class="flex items-center gap-2">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-sm shadow-blue-500/20">
+                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
+                    </div>
+                    <div>
+                        <span class="text-lg font-bold text-slate-900">XteraPlay</span>
+                        <span class="block text-[10px] font-semibold text-blue-600 uppercase tracking-wider leading-none">Admin Panel</span>
+                    </div>
+                </a>
             </div>
-            <h1 class="text-2xl font-bold">Admin Login</h1>
-            <p class="text-gray-400 text-sm mt-1">Sign in to the admin panel</p>
-        </div>
 
-        <!-- Login Card -->
-        <div class="bg-[#1a1a1f] border border-[#2a2a30] rounded-xl p-6">
-            @if($errors->any())
-                <div class="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
-                    <p class="text-red-400 text-sm">{{ $errors->first() }}</p>
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-12 h-12 bg-blue-50 rounded-full mb-3">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                </div>
+                <h1 class="text-xl sm:text-2xl font-bold text-slate-900 mb-1">Admin Login</h1>
+                <p class="text-sm text-slate-600">Sign in to access the admin panel</p>
+            </div>
+
+            @if(session('status'))
+                <div class="mb-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
+                    <p class="text-sm text-emerald-700">{{ session('status') }}</p>
                 </div>
             @endif
 
-            <form method="POST" action="{{ url('/admin/login') }}">
+            <form method="POST" action="{{ url('/admin/login') }}" class="space-y-4">
                 @csrf
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-1">Email</label>
-                        <input type="email" name="email" value="{{ old('email') }}" required autofocus class="w-full px-4 py-2.5 bg-[#111113] border border-[#2a2a30] rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 text-sm" placeholder="admin@xteraplay.com">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-1">Password</label>
-                        <input type="password" name="password" required class="w-full px-4 py-2.5 bg-[#111113] border border-[#2a2a30] rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 text-sm" placeholder="Enter password">
-                    </div>
-                    <div class="flex items-center">
-                        <input type="checkbox" name="remember" id="remember" class="w-4 h-4 rounded border-[#2a2a30] bg-[#111113] text-indigo-500 focus:ring-indigo-500">
-                        <label for="remember" class="ml-2 text-sm text-gray-400">Remember me</label>
-                    </div>
-                    <button type="submit" class="w-full py-2.5 bg-gradient-to-r from-indigo-500 to-violet-600 text-white text-sm font-medium rounded-lg hover:from-indigo-600 hover:to-violet-700 transition">Sign In</button>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
+                    <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus
+                        class="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition"
+                        placeholder="admin@xteraplay.com">
+                    @error('email')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
                 </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
+                    <input type="password" id="password" name="password" required
+                        class="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition"
+                        placeholder="Enter password">
+                    @error('password')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
+                </div>
+
+                <label class="flex items-center gap-2">
+                    <input type="checkbox" name="remember" class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-2 focus:ring-blue-100">
+                    <span class="text-sm text-slate-600">Remember me</span>
+                </label>
+
+                <button type="submit" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg shadow-sm shadow-blue-500/25 transition">
+                    Sign In to Admin
+                </button>
             </form>
+
+            <div class="mt-6 pt-6 border-t border-slate-200 text-center">
+                <a href="{{ url('/') }}" class="text-sm text-slate-600 hover:text-blue-600 font-medium inline-flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                    Back to main site
+                </a>
+            </div>
         </div>
-
-        <p class="text-center text-gray-500 text-xs mt-6">&copy; {{ date('Y') }} XteraPlay. Admin Panel.</p>
     </div>
-
 </body>
 </html>

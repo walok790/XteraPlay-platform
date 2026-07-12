@@ -1,51 +1,39 @@
 @extends('admin.layouts.app')
 @section('title', 'Messages')
+
 @section('content')
-<div class="bg-[#1a1a1f] border border-[#2a2a30] rounded-xl">
-    <div class="p-4 sm:p-6 border-b border-[#2a2a30]">
-        <h2 class="text-lg font-semibold text-white">Contact Form Submissions</h2>
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+    <div>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-900">Contact Messages</h2>
+        <p class="text-sm text-slate-600 mt-1">Messages received via the contact form.</p>
     </div>
-    <div class="divide-y divide-[#2a2a30]">
-        <div class="p-4 sm:p-6 hover:bg-[#111113] transition">
-            <div class="flex items-start justify-between mb-2">
-                <div>
-                    <h3 class="text-white font-medium text-sm">Partnership Inquiry</h3>
-                    <p class="text-gray-400 text-xs">From: mike@example.com &bull; Jan 22, 2024</p>
+    <select class="px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm text-slate-700 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition self-start sm:self-auto">
+        <option>All messages</option>
+        <option>Unread</option>
+        <option>Replied</option>
+    </select>
+</div>
+
+<div class="space-y-3 sm:space-y-4">
+    @foreach([['name'=>'John Anderson', 'email'=>'john@example.com', 'subject'=>'Partnership inquiry', 'preview'=>'Hi team, we are interested in partnering with XteraPlay for our creator platform...', 'time'=>'2 hours ago', 'unread'=>true], ['name'=>'Maria Garcia', 'email'=>'maria@example.com', 'subject'=>'Bulk pricing question', 'preview'=>'Do you offer bulk discounts for teams of 20+ users? We are looking to onboard...', 'time'=>'5 hours ago', 'unread'=>true], ['name'=>'David Chen', 'email'=>'david@example.com', 'subject'=>'API rate limits', 'preview'=>'What are the API rate limits on the Enterprise plan? Our use case requires...', 'time'=>'1 day ago', 'unread'=>false], ['name'=>'Anna Kim', 'email'=>'anna@example.com', 'subject'=>'Feature request', 'preview'=>'Would love to see support for scheduled downloads. Any plans to add this?', 'time'=>'2 days ago', 'unread'=>false]] as $m)
+    <div class="bg-white border {{ $m['unread'] ? 'border-blue-200' : 'border-slate-200' }} rounded-2xl p-5 hover:shadow-md transition">
+        <div class="flex items-start justify-between gap-3 mb-2">
+            <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-2 mb-1">
+                    @if($m['unread'])<span class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></span>@endif
+                    <p class="text-sm sm:text-base font-semibold text-slate-900 truncate">{{ $m['subject'] }}</p>
                 </div>
-                <span class="px-2 py-0.5 bg-yellow-500/10 text-yellow-400 text-xs rounded-full">Unread</span>
+                <p class="text-xs text-slate-500">{{ $m['name'] }} · {{ $m['email'] }} · {{ $m['time'] }}</p>
             </div>
-            <p class="text-gray-300 text-sm">Hi, I'm interested in partnering with XteraPlay for content distribution. Could we schedule a call?</p>
+            @if($m['unread'])<span class="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-medium rounded-full flex-shrink-0">New</span>@endif
         </div>
-        <div class="p-4 sm:p-6 hover:bg-[#111113] transition">
-            <div class="flex items-start justify-between mb-2">
-                <div>
-                    <h3 class="text-white font-medium text-sm">Feature Request</h3>
-                    <p class="text-gray-400 text-xs">From: sarah@example.com &bull; Jan 20, 2024</p>
-                </div>
-                <span class="px-2 py-0.5 bg-green-500/10 text-green-400 text-xs rounded-full">Read</span>
-            </div>
-            <p class="text-gray-300 text-sm">Would love to see a browser extension for easier downloading. Any plans for that?</p>
-        </div>
-        <div class="p-4 sm:p-6 hover:bg-[#111113] transition">
-            <div class="flex items-start justify-between mb-2">
-                <div>
-                    <h3 class="text-white font-medium text-sm">Bug Report</h3>
-                    <p class="text-gray-400 text-xs">From: john@example.com &bull; Jan 19, 2024</p>
-                </div>
-                <span class="px-2 py-0.5 bg-green-500/10 text-green-400 text-xs rounded-full">Read</span>
-            </div>
-            <p class="text-gray-300 text-sm">I found an issue where the progress bar shows 100% but the file isn't actually complete.</p>
-        </div>
-        <div class="p-4 sm:p-6 hover:bg-[#111113] transition">
-            <div class="flex items-start justify-between mb-2">
-                <div>
-                    <h3 class="text-white font-medium text-sm">Billing Question</h3>
-                    <p class="text-gray-400 text-xs">From: emily@example.com &bull; Jan 17, 2024</p>
-                </div>
-                <span class="px-2 py-0.5 bg-green-500/10 text-green-400 text-xs rounded-full">Replied</span>
-            </div>
-            <p class="text-gray-300 text-sm">Can I get a refund for my last payment? I was charged twice for some reason.</p>
+        <p class="text-sm text-slate-700 leading-relaxed line-clamp-2 mb-3">{{ $m['preview'] }}</p>
+        <div class="flex items-center gap-2">
+            <button class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition">Reply</button>
+            <button class="px-3 py-1.5 bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 text-xs font-medium rounded-lg transition">Mark as read</button>
+            <button class="px-3 py-1.5 text-slate-500 hover:text-red-600 text-xs font-medium rounded-lg transition">Delete</button>
         </div>
     </div>
+    @endforeach
 </div>
 @endsection
