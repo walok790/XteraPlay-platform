@@ -135,6 +135,115 @@
 </section>
 
 
+<!-- Supported Platforms Badge Row -->
+<section class="py-12 lg:py-16 relative border-b border-dark-700/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10">
+            <p class="text-sm font-medium text-dark-400 uppercase tracking-wider mb-2">Works With All TeraBox Domains</p>
+            <h3 class="text-xl sm:text-2xl font-bold text-white">Supported Platforms</h3>
+        </div>
+
+        <!-- Scrolling Badge Row -->
+        <div class="relative overflow-hidden" x-data="{ offset: 0 }" x-init="setInterval(() => { offset -= 0.5; if (offset <= -50) offset = 0; }, 30)">
+            <div class="flex items-center gap-4 sm:gap-6 flex-wrap justify-center">
+                <!-- TeraBox -->
+                <div class="glass-card rounded-xl px-5 py-3 flex items-center gap-3 hover:border-blue-500/30 transition-all group">
+                    <div class="w-8 h-8 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-semibold text-white group-hover:text-blue-400 transition-colors">terabox.com</p>
+                        <p class="text-[10px] text-dark-500">Global</p>
+                    </div>
+                    <span class="ml-2 w-2 h-2 bg-green-400 rounded-full"></span>
+                </div>
+
+                <!-- 1024TeraBox -->
+                <div class="glass-card rounded-xl px-5 py-3 flex items-center gap-3 hover:border-purple-500/30 transition-all group">
+                    <div class="w-8 h-8 bg-purple-500/10 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-semibold text-white group-hover:text-purple-400 transition-colors">1024terabox.com</p>
+                        <p class="text-[10px] text-dark-500">China/Asia</p>
+                    </div>
+                    <span class="ml-2 w-2 h-2 bg-green-400 rounded-full"></span>
+                </div>
+
+                <!-- TeraBox App -->
+                <div class="glass-card rounded-xl px-5 py-3 flex items-center gap-3 hover:border-orange-500/30 transition-all group">
+                    <div class="w-8 h-8 bg-orange-500/10 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-semibold text-white group-hover:text-orange-400 transition-colors">teraboxapp.com</p>
+                        <p class="text-[10px] text-dark-500">App Links</p>
+                    </div>
+                    <span class="ml-2 w-2 h-2 bg-green-400 rounded-full"></span>
+                </div>
+
+                <!-- TeraBox Share -->
+                <div class="glass-card rounded-xl px-5 py-3 flex items-center gap-3 hover:border-green-500/30 transition-all group">
+                    <div class="w-8 h-8 bg-green-500/10 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-semibold text-white group-hover:text-green-400 transition-colors">teraboxshare.com</p>
+                        <p class="text-[10px] text-dark-500">Share Links</p>
+                    </div>
+                    <span class="ml-2 w-2 h-2 bg-green-400 rounded-full"></span>
+                </div>
+
+                <!-- Freeterabox -->
+                <div class="glass-card rounded-xl px-5 py-3 flex items-center gap-3 hover:border-cyan-500/30 transition-all group">
+                    <div class="w-8 h-8 bg-cyan-500/10 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-semibold text-white group-hover:text-cyan-400 transition-colors">freeterabox.com</p>
+                        <p class="text-[10px] text-dark-500">Free Tier</p>
+                    </div>
+                    <span class="ml-2 w-2 h-2 bg-green-400 rounded-full"></span>
+                </div>
+
+                <!-- Mirrobox -->
+                <div class="glass-card rounded-xl px-5 py-3 flex items-center gap-3 hover:border-pink-500/30 transition-all group">
+                    <div class="w-8 h-8 bg-pink-500/10 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-semibold text-white group-hover:text-pink-400 transition-colors">mirrobox.com</p>
+                        <p class="text-[10px] text-dark-500">Mirror</p>
+                    </div>
+                    <span class="ml-2 w-2 h-2 bg-green-400 rounded-full"></span>
+                </div>
+            </div>
+
+            <!-- All supported note -->
+            <div class="mt-8 text-center">
+                <p class="text-xs text-dark-500 inline-flex items-center gap-2">
+                    <svg class="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    All TeraBox regional domains and short-links are fully supported &bull; Auto-detected
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Services Section -->
 <section id="services" class="py-20 lg:py-28 relative">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -574,6 +683,158 @@
             <div>
                 <div class="text-3xl sm:text-4xl font-bold gradient-text mb-2">4.9/5</div>
                 <p class="text-sm text-dark-400">User Rating</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials / Reviews Carousel -->
+<section class="py-20 lg:py-28 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+            <div class="inline-flex items-center gap-2 px-4 py-2 glass-card rounded-full mb-6">
+                <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+                <span class="text-sm text-dark-300 font-medium">Trusted by Thousands</span>
+            </div>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">What Our Users Say</h2>
+            <p class="text-lg text-dark-400 max-w-2xl mx-auto">Real reviews from real users who love streaming with XteraPlay.</p>
+        </div>
+
+        <!-- Carousel -->
+        <div x-data="{
+            currentSlide: 0,
+            totalSlides: 6,
+            autoplay: null,
+            reviews: [
+                { name: 'Rahul K.', role: 'Content Creator', avatar: 'RK', rating: 5, text: 'XteraPlay is a game-changer! I can stream TeraBox videos instantly without any hassle. The HD quality is amazing and there is zero buffering.', color: 'from-blue-500 to-cyan-500' },
+                { name: 'Sarah M.', role: 'Student', avatar: 'SM', rating: 5, text: 'Finally a platform that actually works! I use it daily to watch educational content from TeraBox. The free tier is generous enough for my needs.', color: 'from-purple-500 to-pink-500' },
+                { name: 'Ahmed T.', role: 'Developer', avatar: 'AT', rating: 5, text: 'The API access is fantastic for my project. Clean documentation and reliable service. XteraPlay handles all the heavy lifting so I can focus on building.', color: 'from-green-500 to-emerald-500' },
+                { name: 'Priya S.', role: 'Designer', avatar: 'PS', rating: 4, text: 'Love the clean UI and how fast it processes links. Batch processing saves me so much time. Highly recommend the Pro plan for power users.', color: 'from-orange-500 to-red-500' },
+                { name: 'Michael L.', role: 'Freelancer', avatar: 'ML', rating: 5, text: 'Been using XteraPlay for 6 months now. Never had a single issue. Support team responds quickly and the platform is always improving.', color: 'from-indigo-500 to-purple-500' },
+                { name: 'Fatima Z.', role: 'Blogger', avatar: 'FZ', rating: 5, text: 'The mobile experience is flawless. I can watch TeraBox content on my phone without downloading large apps. Works perfectly on any browser!', color: 'from-pink-500 to-rose-500' }
+            ],
+            init() {
+                this.autoplay = setInterval(() => { this.next() }, 5000);
+            },
+            next() {
+                this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
+            },
+            prev() {
+                this.currentSlide = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
+            },
+            goTo(index) {
+                this.currentSlide = index;
+                clearInterval(this.autoplay);
+                this.autoplay = setInterval(() => { this.next() }, 5000);
+            }
+        }" class="relative">
+
+            <!-- Cards Container - shows 1 on mobile, 3 on desktop -->
+            <div class="relative overflow-hidden">
+                <!-- Desktop View (3 cards) -->
+                <div class="hidden lg:grid lg:grid-cols-3 gap-6">
+                    <template x-for="(review, index) in reviews.slice(currentSlide, currentSlide + 3).concat(reviews.slice(0, Math.max(0, (currentSlide + 3) - totalSlides)))" :key="index">
+                        <div class="glass-card rounded-2xl p-6 transition-all duration-500 hover:border-primary-500/20">
+                            <!-- Stars -->
+                            <div class="flex items-center gap-1 mb-4">
+                                <template x-for="star in review.rating" :key="star">
+                                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                    </svg>
+                                </template>
+                                <template x-for="star in (5 - review.rating)" :key="'empty-'+star">
+                                    <svg class="w-4 h-4 text-dark-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                    </svg>
+                                </template>
+                            </div>
+
+                            <!-- Review Text -->
+                            <p class="text-sm text-dark-300 leading-relaxed mb-6" x-text="review.text"></p>
+
+                            <!-- Author -->
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold bg-gradient-to-br" :class="review.color" x-text="review.avatar"></div>
+                                <div>
+                                    <p class="text-sm font-semibold text-white" x-text="review.name"></p>
+                                    <p class="text-xs text-dark-500" x-text="review.role"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Mobile/Tablet View (1 card) -->
+                <div class="lg:hidden">
+                    <template x-for="(review, index) in reviews" :key="index">
+                        <div x-show="currentSlide === index"
+                             x-transition:enter="transition ease-out duration-300"
+                             x-transition:enter-start="opacity-0 translate-x-8"
+                             x-transition:enter-end="opacity-100 translate-x-0"
+                             x-transition:leave="transition ease-in duration-200"
+                             x-transition:leave-start="opacity-100 translate-x-0"
+                             x-transition:leave-end="opacity-0 -translate-x-8"
+                             class="glass-card rounded-2xl p-6 sm:p-8">
+                            <!-- Stars -->
+                            <div class="flex items-center gap-1 mb-4">
+                                <template x-for="star in review.rating" :key="star">
+                                    <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                    </svg>
+                                </template>
+                                <template x-for="star in (5 - review.rating)" :key="'empty-'+star">
+                                    <svg class="w-5 h-5 text-dark-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                    </svg>
+                                </template>
+                            </div>
+
+                            <!-- Review Text -->
+                            <p class="text-base text-dark-300 leading-relaxed mb-6" x-text="review.text"></p>
+
+                            <!-- Author -->
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-full flex items-center justify-center text-white text-sm font-bold bg-gradient-to-br" :class="review.color" x-text="review.avatar"></div>
+                                <div>
+                                    <p class="text-sm font-semibold text-white" x-text="review.name"></p>
+                                    <p class="text-xs text-dark-500" x-text="review.role"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Navigation Controls -->
+            <div class="flex items-center justify-center gap-4 mt-10">
+                <!-- Prev Button -->
+                <button @click="prev(); clearInterval(autoplay); autoplay = setInterval(() => { next() }, 5000)"
+                        class="w-10 h-10 glass-card rounded-full flex items-center justify-center text-dark-400 hover:text-white hover:border-primary-500/30 transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+
+                <!-- Dots -->
+                <div class="flex items-center gap-2">
+                    <template x-for="(dot, index) in totalSlides" :key="index">
+                        <button @click="goTo(index)"
+                                :class="currentSlide === index ? 'w-8 bg-primary-500' : 'w-2 bg-dark-600 hover:bg-dark-500'"
+                                class="h-2 rounded-full transition-all duration-300">
+                        </button>
+                    </template>
+                </div>
+
+                <!-- Next Button -->
+                <button @click="next(); clearInterval(autoplay); autoplay = setInterval(() => { next() }, 5000)"
+                        class="w-10 h-10 glass-card rounded-full flex items-center justify-center text-dark-400 hover:text-white hover:border-primary-500/30 transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
             </div>
         </div>
     </div>
