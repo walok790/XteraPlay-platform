@@ -8,6 +8,9 @@ Route::get('/', function () {
     return view('landing');
 });
 
+// Public routes
+Route::get('/contact', fn() => view('contact'))->name('contact');
+
 // Auth Routes (Guest only)
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -22,4 +25,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    Route::get('/home', fn() => view('home'))->name('home');
+    Route::get('/subscription', fn() => view('subscription'))->name('subscription');
+    Route::get('/bookmarks', fn() => view('bookmarks'))->name('bookmarks');
+    Route::get('/history', fn() => view('history'))->name('history');
+    Route::get('/support', fn() => view('support'))->name('support');
 });

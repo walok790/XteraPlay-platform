@@ -46,13 +46,18 @@
 
                 <!-- Center Navigation (Desktop) -->
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="{{ url('/') }}" class="text-gray-300 hover:text-white transition text-sm font-medium">Home</a>
+                    @auth
+                        <a href="{{ url('/home') }}" class="text-gray-300 hover:text-white transition text-sm font-medium">Home</a>
+                    @else
+                        <a href="{{ url('/') }}" class="text-gray-300 hover:text-white transition text-sm font-medium">Home</a>
+                    @endauth
                     @auth
                         <a href="{{ url('/dashboard') }}" class="text-gray-300 hover:text-white transition text-sm font-medium">Dashboard</a>
                         <a href="{{ url('/bookmarks') }}" class="text-gray-300 hover:text-white transition text-sm font-medium">Bookmarks</a>
                         <a href="{{ url('/history') }}" class="text-gray-300 hover:text-white transition text-sm font-medium">History</a>
                     @endauth
                     <a href="{{ url('/subscription') }}" class="text-gray-300 hover:text-white transition text-sm font-medium">Subscription</a>
+                    <a href="{{ url('/contact') }}" class="text-gray-300 hover:text-white transition text-sm font-medium">Contact</a>
                 </div>
 
                 <!-- Right Side -->
@@ -62,12 +67,61 @@
                         <a href="{{ url('/register') }}" class="px-4 py-2 bg-gradient-to-r from-indigo-500 to-violet-600 text-white text-sm font-medium rounded-lg hover:from-indigo-600 hover:to-violet-700 transition">Get Started</a>
                     @endguest
                     @auth
-                        <!-- Bell Icon -->
-                        <button class="text-gray-400 hover:text-white transition">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                            </svg>
-                        </button>
+                        <!-- Notification Bell Dropdown -->
+                        <div class="relative" x-data="{ notifOpen: false }" @click.away="notifOpen = false">
+                            <button @click="notifOpen = !notifOpen" class="relative text-gray-400 hover:text-white transition focus:outline-none">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                                </svg>
+                                <!-- Unread badge -->
+                                <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-[#111113]"></span>
+                            </button>
+                            <!-- Notification Dropdown -->
+                            <div x-show="notifOpen" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute right-0 mt-2 w-80 bg-[#1a1a1f] border border-[#2a2a30] rounded-xl shadow-xl z-50" style="display: none;">
+                                <div class="px-4 py-3 border-b border-[#2a2a30] flex items-center justify-between">
+                                    <p class="text-sm font-semibold text-white">Notifications</p>
+                                    <span class="px-2 py-0.5 bg-red-500/10 text-red-400 text-xs font-medium rounded-full">3 new</span>
+                                </div>
+                                <div class="max-h-64 overflow-y-auto">
+                                    <div class="px-4 py-3 hover:bg-[#2a2a30] transition border-b border-[#2a2a30]">
+                                        <div class="flex items-start space-x-3">
+                                            <div class="w-8 h-8 bg-indigo-500/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                <svg class="w-4 h-4 text-indigo-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6z"/></svg>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm text-white">Welcome to XteraPlay!</p>
+                                                <p class="text-xs text-gray-500 mt-0.5">2 hours ago</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="px-4 py-3 hover:bg-[#2a2a30] transition border-b border-[#2a2a30]">
+                                        <div class="flex items-start space-x-3">
+                                            <div class="w-8 h-8 bg-green-500/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                <svg class="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1z" clip-rule="evenodd"/></svg>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm text-white">Your daily credits refreshed</p>
+                                                <p class="text-xs text-gray-500 mt-0.5">5 hours ago</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="px-4 py-3 hover:bg-[#2a2a30] transition">
+                                        <div class="flex items-start space-x-3">
+                                            <div class="w-8 h-8 bg-violet-500/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                <svg class="w-4 h-4 text-violet-400" fill="currentColor" viewBox="0 0 20 20"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z"/></svg>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm text-white">New feature: Batch downloads</p>
+                                                <p class="text-xs text-gray-500 mt-0.5">1 day ago</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="px-4 py-3 border-t border-[#2a2a30]">
+                                    <a href="#" class="text-sm text-indigo-400 hover:text-indigo-300 transition font-medium">View All Notifications</a>
+                                </div>
+                            </div>
+                        </div>
                         <!-- User Dropdown -->
                         <div class="relative" @click.away="userDropdown = false">
                             <button @click="userDropdown = !userDropdown" class="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white text-sm font-semibold focus:outline-none">
@@ -134,13 +188,18 @@
         <!-- Mobile Menu -->
         <div x-show="mobileOpen" x-transition class="md:hidden bg-[#1a1a1f] border-t border-[#2a2a30]" style="display: none;">
             <div class="px-4 py-4 space-y-2">
-                <a href="{{ url('/') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">Home</a>
+                @auth
+                    <a href="{{ url('/home') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">Home</a>
+                @else
+                    <a href="{{ url('/') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">Home</a>
+                @endauth
                 @auth
                     <a href="{{ url('/dashboard') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">Dashboard</a>
                     <a href="{{ url('/bookmarks') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">Bookmarks</a>
                     <a href="{{ url('/history') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">History</a>
                 @endauth
                 <a href="{{ url('/subscription') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">Subscription</a>
+                <a href="{{ url('/contact') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">Contact</a>
                 @guest
                     <div class="pt-4 border-t border-[#2a2a30] space-y-2">
                         <a href="{{ url('/login') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">Sign In</a>
