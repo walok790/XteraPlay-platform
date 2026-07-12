@@ -39,6 +39,23 @@
                 </div>
             @endif
 
+            @php
+                try {
+                    $isDemoMode = \App\Models\Setting::get('install_mode') === 'demo';
+                } catch (\Throwable $e) {
+                    $isDemoMode = false;
+                }
+            @endphp
+            @if($isDemoMode)
+                <div class="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                    <p class="text-xs font-semibold text-amber-900 mb-1.5">🎯 Demo Mode — admin credentials</p>
+                    <div class="space-y-1 text-xs">
+                        <p class="text-slate-700"><span class="text-slate-500">Email:</span> <code class="bg-white px-1 py-0.5 rounded">admin@xteraplay.com</code></p>
+                        <p class="text-slate-700"><span class="text-slate-500">Password:</span> <code class="bg-white px-1 py-0.5 rounded">admin1234</code></p>
+                    </div>
+                </div>
+            @endif
+
             <form method="POST" action="{{ url('/admin/login') }}" class="space-y-4">
                 @csrf
                 <div>

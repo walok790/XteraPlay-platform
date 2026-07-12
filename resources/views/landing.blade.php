@@ -4,6 +4,33 @@
 
 @section('content')
 
+@if(session('installer_success'))
+    @php $s = session('installer_success'); @endphp
+    <div x-data="{ show: true }" x-show="show" x-transition class="fixed top-4 left-1/2 -translate-x-1/2 z-50 max-w-2xl w-[calc(100%-2rem)]">
+        <div class="bg-white border-2 border-emerald-500 rounded-2xl shadow-xl shadow-emerald-500/20 p-4 sm:p-5">
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.71-9.29a1 1 0 00-1.42-1.42L9 10.59 7.71 9.29a1 1 0 00-1.42 1.42l2 2a1 1 0 001.42 0l4-4z" clip-rule="evenodd"/></svg>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <p class="text-sm sm:text-base font-bold text-slate-900">🎉 Installation complete!</p>
+                    <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Your XteraPlay platform is ready. Sign in with your admin account at <a href="{{ url('/admin/login') }}" class="text-blue-600 hover:underline font-medium">/admin/login</a>.</p>
+                    @if($s['mode'] === 'demo' && $s['admin_password'])
+                    <div class="mt-2.5 p-2.5 bg-amber-50 border border-amber-200 rounded-lg text-xs">
+                        <p class="font-semibold text-amber-900 mb-1">Demo credentials:</p>
+                        <p class="text-slate-700"><span class="text-slate-500">Email:</span> <code class="bg-white px-1 py-0.5 rounded">{{ $s['admin_email'] }}</code></p>
+                        <p class="text-slate-700"><span class="text-slate-500">Password:</span> <code class="bg-white px-1 py-0.5 rounded">{{ $s['admin_password'] }}</code></p>
+                    </div>
+                    @endif
+                </div>
+                <button @click="show = false" class="text-slate-400 hover:text-slate-600 flex-shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+@endif
+
 @php
     $iconColors = [
         'blue' => ['bg' => 'bg-blue-50', 'text' => 'text-blue-600'],
