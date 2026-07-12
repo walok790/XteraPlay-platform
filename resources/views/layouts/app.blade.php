@@ -42,11 +42,17 @@
                     <a href="{{ url('/history') }}" class="text-sm text-slate-600 hover:text-slate-900 font-medium transition">History</a>
                     <a href="{{ url('/subscription') }}" class="text-sm text-slate-600 hover:text-slate-900 font-medium transition">Plans</a>
                 @else
-                    <a href="{{ url('/') }}" class="text-sm text-slate-600 hover:text-slate-900 font-medium transition">Home</a>
-                    <a href="{{ url('/') }}#features" class="text-sm text-slate-600 hover:text-slate-900 font-medium transition">Features</a>
-                    <a href="{{ url('/') }}#pricing" class="text-sm text-slate-600 hover:text-slate-900 font-medium transition">Pricing</a>
-                    <a href="{{ url('/') }}#reviews" class="text-sm text-slate-600 hover:text-slate-900 font-medium transition">Reviews</a>
-                    <a href="{{ url('/contact') }}" class="text-sm text-slate-600 hover:text-slate-900 font-medium transition">Contact</a>
+                    @if(isset($landing_nav_links) && $landing_nav_links->count())
+                        @foreach($landing_nav_links as $link)
+                            <a href="{{ url($link->url) }}" @if($link->open_new_tab) target="_blank" rel="noopener" @endif class="text-sm text-slate-600 hover:text-slate-900 font-medium transition">{{ $link->label }}</a>
+                        @endforeach
+                    @else
+                        <a href="{{ url('/') }}" class="text-sm text-slate-600 hover:text-slate-900 font-medium transition">Home</a>
+                        <a href="{{ url('/') }}#features" class="text-sm text-slate-600 hover:text-slate-900 font-medium transition">Features</a>
+                        <a href="{{ url('/') }}#pricing" class="text-sm text-slate-600 hover:text-slate-900 font-medium transition">Pricing</a>
+                        <a href="{{ url('/') }}#reviews" class="text-sm text-slate-600 hover:text-slate-900 font-medium transition">Reviews</a>
+                        <a href="{{ url('/contact') }}" class="text-sm text-slate-600 hover:text-slate-900 font-medium transition">Contact</a>
+                    @endif
                 @endauth
             </div>
 
@@ -135,11 +141,17 @@
                     <button type="submit" class="block w-full text-left px-3 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-lg font-medium">Sign Out</button>
                 </form>
             @else
-                <a href="{{ url('/') }}" class="block px-3 py-2.5 text-sm text-slate-700 hover:bg-slate-100 rounded-lg font-medium">Home</a>
-                <a href="{{ url('/') }}#features" class="block px-3 py-2.5 text-sm text-slate-700 hover:bg-slate-100 rounded-lg font-medium">Features</a>
-                <a href="{{ url('/') }}#pricing" class="block px-3 py-2.5 text-sm text-slate-700 hover:bg-slate-100 rounded-lg font-medium">Pricing</a>
-                <a href="{{ url('/') }}#reviews" class="block px-3 py-2.5 text-sm text-slate-700 hover:bg-slate-100 rounded-lg font-medium">Reviews</a>
-                <a href="{{ url('/contact') }}" class="block px-3 py-2.5 text-sm text-slate-700 hover:bg-slate-100 rounded-lg font-medium">Contact</a>
+                @if(isset($landing_nav_links) && $landing_nav_links->count())
+                    @foreach($landing_nav_links as $link)
+                        <a href="{{ url($link->url) }}" @if($link->open_new_tab) target="_blank" rel="noopener" @endif class="block px-3 py-2.5 text-sm text-slate-700 hover:bg-slate-100 rounded-lg font-medium">{{ $link->label }}</a>
+                    @endforeach
+                @else
+                    <a href="{{ url('/') }}" class="block px-3 py-2.5 text-sm text-slate-700 hover:bg-slate-100 rounded-lg font-medium">Home</a>
+                    <a href="{{ url('/') }}#features" class="block px-3 py-2.5 text-sm text-slate-700 hover:bg-slate-100 rounded-lg font-medium">Features</a>
+                    <a href="{{ url('/') }}#pricing" class="block px-3 py-2.5 text-sm text-slate-700 hover:bg-slate-100 rounded-lg font-medium">Pricing</a>
+                    <a href="{{ url('/') }}#reviews" class="block px-3 py-2.5 text-sm text-slate-700 hover:bg-slate-100 rounded-lg font-medium">Reviews</a>
+                    <a href="{{ url('/contact') }}" class="block px-3 py-2.5 text-sm text-slate-700 hover:bg-slate-100 rounded-lg font-medium">Contact</a>
+                @endif
                 <div class="pt-2 border-t border-slate-200 mt-2 space-y-1">
                     <a href="{{ url('/login') }}" class="block px-3 py-2.5 text-sm text-slate-700 hover:bg-slate-100 rounded-lg font-medium">Sign In</a>
                     <a href="{{ url('/register') }}" class="block px-3 py-2.5 text-center text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-lg">Get Started</a>

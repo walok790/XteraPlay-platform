@@ -5,6 +5,13 @@
 @section('content')
 <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-10 space-y-4 sm:space-y-6">
 
+    @if(session('status'))
+        <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-start gap-3">
+            <svg class="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.71-9.29a1 1 0 00-1.42-1.42L9 10.59 7.71 9.29a1 1 0 00-1.42 1.42l2 2a1 1 0 001.42 0l4-4z" clip-rule="evenodd"/></svg>
+            <p class="text-sm text-emerald-700">{{ session('status') }}</p>
+        </div>
+    @endif
+
     <!-- Terabox Search Card -->
     <div class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-7 md:p-8">
         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4 sm:mb-5">
@@ -31,39 +38,23 @@
 
     <!-- Your Stats -->
     <div class="grid grid-cols-3 gap-3 sm:gap-4">
+        @foreach([
+            ['icon' => 'M14.75 11.17l-3.2-2.13A1 1 0 0010 9.87v4.26a1 1 0 001.55.83l3.2-2.13a1 1 0 000-1.66z', 'value' => $stats['videos_watched'], 'label' => 'Watched', 'color' => 'blue'],
+            ['icon' => 'M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4', 'value' => $stats['downloads'], 'label' => 'Downloads', 'color' => 'emerald'],
+            ['icon' => 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z', 'value' => $stats['searches_today'], 'label' => 'Searches', 'color' => 'violet'],
+        ] as $stat)
         <div class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5">
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 sm:w-10 sm:h-10 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.75 11.17l-3.2-2.13A1 1 0 0010 9.87v4.26a1 1 0 001.55.83l3.2-2.13a1 1 0 000-1.66z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <div class="w-9 h-9 sm:w-10 sm:h-10 bg-{{ $stat['color'] }}-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-{{ $stat['color'] }}-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $stat['icon'] }}"/></svg>
                 </div>
                 <div class="min-w-0">
-                    <p class="text-lg sm:text-2xl font-bold text-slate-900">0</p>
-                    <p class="text-xs text-slate-500">Watched</p>
+                    <p class="text-lg sm:text-2xl font-bold text-slate-900">{{ $stat['value'] }}</p>
+                    <p class="text-xs text-slate-500">{{ $stat['label'] }}</p>
                 </div>
             </div>
         </div>
-        <div class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 sm:w-10 sm:h-10 bg-emerald-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                </div>
-                <div class="min-w-0">
-                    <p class="text-lg sm:text-2xl font-bold text-slate-900">0</p>
-                    <p class="text-xs text-slate-500">Downloads</p>
-                </div>
-            </div>
-        </div>
-        <div class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 sm:w-10 sm:h-10 bg-violet-50 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <svg class="w-5 h-5 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                </div>
-                <div class="min-w-0">
-                    <p class="text-lg sm:text-2xl font-bold text-slate-900">0</p>
-                    <p class="text-xs text-slate-500">Searches</p>
-                </div>
-            </div>
-        </div>
+        @endforeach
     </div>
 
     <!-- Recently Watched -->
@@ -78,13 +69,15 @@
         </div>
     </div>
 
-    <!-- Feedback -->
+    <!-- Feedback (submits real review requiring admin approval) -->
     <div class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6" x-data="{ rating: 0, hover: 0 }">
         <h3 class="text-base sm:text-lg font-semibold text-slate-900 mb-1">Share Your Feedback</h3>
-        <p class="text-sm text-slate-600 mb-4">Help us improve XteraPlay</p>
-        <form class="space-y-4">
+        <p class="text-sm text-slate-600 mb-4">Your review will show on our landing page once approved by our team.</p>
+        <form method="POST" action="{{ url('/reviews') }}" class="space-y-4">
+            @csrf
             <div>
                 <label class="block text-sm font-medium text-slate-700 mb-2">Rating</label>
+                <input type="hidden" name="rating" :value="rating">
                 <div class="flex items-center gap-1">
                     <template x-for="star in 5" :key="star">
                         <button type="button" @click="rating = star" @mouseenter="hover = star" @mouseleave="hover = 0" class="focus:outline-none">
@@ -92,48 +85,36 @@
                         </button>
                     </template>
                 </div>
+                @error('rating')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
             </div>
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-2">Message</label>
-                <textarea rows="3" placeholder="Tell us what you think..." class="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition resize-none"></textarea>
+                <label class="block text-sm font-medium text-slate-700 mb-2">Message <span class="text-red-500">*</span></label>
+                <textarea name="message" rows="3" required placeholder="Tell us what you think..." class="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition resize-none">{{ old('message') }}</textarea>
+                @error('message')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
             </div>
-            <button type="submit" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg shadow-sm shadow-blue-500/25 transition">Submit Feedback</button>
+            <button type="submit" :disabled="rating === 0" :class="rating === 0 ? 'opacity-50 cursor-not-allowed' : ''" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg shadow-sm shadow-blue-500/25 transition">Submit Feedback</button>
         </form>
     </div>
 
-    <!-- Announcements -->
+    <!-- Announcements (dynamic from DB) -->
+    @if($announcements->count())
     <div class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6">
         <h3 class="text-base sm:text-lg font-semibold text-slate-900 mb-4">Latest Announcements</h3>
         <div class="space-y-4">
-            <div class="pb-4 border-b border-slate-100">
+            @foreach($announcements as $a)
+            <div class="{{ ! $loop->last ? 'pb-4 border-b border-slate-100' : '' }}">
                 <div class="flex items-center gap-2 mb-1">
-                    <span class="text-xs text-slate-500">Jan 15, 2025</span>
+                    <span class="text-xs text-slate-500">{{ $a->published_at?->format('M j, Y') }}</span>
                     <span class="w-1 h-1 bg-slate-400 rounded-full"></span>
-                    <span class="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-medium rounded-full">New Feature</span>
+                    <span class="px-2 py-0.5 {{ $a->type_color }} text-xs font-medium rounded-full">{{ ucfirst($a->type) }}</span>
                 </div>
-                <h4 class="text-sm font-semibold text-slate-900 mb-1">Batch Downloads Now Available</h4>
-                <p class="text-sm text-slate-600 leading-relaxed">Pro users can now download multiple files at once from their dashboard.</p>
+                <h4 class="text-sm font-semibold text-slate-900 mb-1">{{ $a->title }}</h4>
+                <p class="text-sm text-slate-600 leading-relaxed">{{ $a->message }}</p>
             </div>
-            <div class="pb-4 border-b border-slate-100">
-                <div class="flex items-center gap-2 mb-1">
-                    <span class="text-xs text-slate-500">Jan 10, 2025</span>
-                    <span class="w-1 h-1 bg-slate-400 rounded-full"></span>
-                    <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-xs font-medium rounded-full">Improvement</span>
-                </div>
-                <h4 class="text-sm font-semibold text-slate-900 mb-1">Faster Streaming Speeds</h4>
-                <p class="text-sm text-slate-600 leading-relaxed">We've upgraded our servers for 2× faster streaming on all plans.</p>
-            </div>
-            <div>
-                <div class="flex items-center gap-2 mb-1">
-                    <span class="text-xs text-slate-500">Jan 5, 2025</span>
-                    <span class="w-1 h-1 bg-slate-400 rounded-full"></span>
-                    <span class="px-2 py-0.5 bg-amber-50 text-amber-700 text-xs font-medium rounded-full">Notice</span>
-                </div>
-                <h4 class="text-sm font-semibold text-slate-900 mb-1">Scheduled Maintenance</h4>
-                <p class="text-sm text-slate-600 leading-relaxed">Brief maintenance on Jan 20th from 2–4 AM UTC.</p>
-            </div>
+            @endforeach
         </div>
     </div>
+    @endif
 
 </div>
 @endsection
