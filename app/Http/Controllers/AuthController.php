@@ -3,13 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Password as PasswordRule;
 
 class AuthController extends Controller
 {
+    // ============ LOGIN ============
     public function showLogin()
     {
         return view('auth.login');
@@ -24,7 +30,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard');
+            return redirect()->intended(url('/dashboard'));
         }
 
         return back()->withErrors([
@@ -32,6 +38,7 @@ class AuthController extends Controller
         ])->onlyInput('email');
     }
 
+    // ============ REGISTER ============
     public function showRegister()
     {
         return view('auth.register');
@@ -42,7 +49,7 @@ class AuthController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'confirmed', Password::min(8)],
+            'password' => ['required', 'confirmed', PasswordRule::min(8)],
             'terms' => ['required', 'accepted'],
         ]);
 
@@ -52,16 +59,100 @@ class AuthController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
+        event(new Registered($user));
         Auth::login($user);
 
-        return redirect('/dashboard');
+        return redirect(url('/email/verify'));
     }
 
+    // ============ LOGOUT ============
     public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/');
+        return redirect(url('/'));
+    }
+
+    // ============ FORGOT PASSWORD ============
+    public function showForgotPassword()
+    {
+        return view('auth.forgot-password');
+    }
+
+    public function sendResetLink(Request $request)
+    {
+        $request->validate(['email' => ['required', 'email']]);
+
+        $status = Password::sendResetLink($request->only('email'));
+
+        return $status === Password::RESET_LINK_SENT
+            ? back()->with('status', __($status))
+            : back()->withErrors(['email' => __($status)]);
+    }
+
+    // ============ RESET PASSWORD ============
+    public function showResetPassword(Request $request, $token)
+    {
+        return view('auth.reset-password', [
+            'token' => $token,
+            'email' => $request->email,
+        ]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token' => ['required'],
+            'email' => ['required', 'email'],
+            'password' => ['required', 'confirmed', PasswordRule::min(8)],
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password),
+                    'remember_token' => Str::random(60),
+                ])->save();
+            }
+        );
+
+        return $status === Password::PASSWORD_RESET
+            ? redirect(url('/login'))->with('status', __($status))
+            : back()->withErrors(['email' => [__($status)]]);
+    }
+
+    // ============ EMAIL VERIFICATION ============
+    public function showVerifyEmail()
+    {
+        if (Auth::user()->hasVerifiedEmail()) {
+            return redirect(url('/dashboard'));
+        }
+        return view('auth.verify-email');
+    }
+
+    public function verifyEmail(EmailVerificationRequest $request)
+    {
+        if ($request->user()->hasVerifiedEmail()) {
+            return redirect(url('/dashboard'));
+        }
+
+        if ($request->user()->markEmailAsVerified()) {
+            event(new Verified($request->user()));
+        }
+
+        return redirect(url('/dashboard'))->with('verified', true);
+    }
+
+    public function sendVerificationEmail(Request $request)
+    {
+        if ($request->user()->hasVerifiedEmail()) {
+            return redirect(url('/dashboard'));
+        }
+
+        $request->user()->sendEmailVerificationNotification();
+
+        return back()->with('status', 'verification-link-sent');
     }
 }

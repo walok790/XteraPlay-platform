@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Sign In - XteraPlay')
+@section('title', 'Reset Password - XteraPlay')
 
 @section('content')
 <div class="min-h-[calc(100vh-3.5rem)] flex items-center justify-center px-4 py-6">
@@ -17,52 +17,49 @@
             </div>
 
             <div class="text-center mb-5">
-                <h1 class="text-lg font-bold text-white mb-1">Welcome back</h1>
-                <p class="text-xs text-gray-400">Sign in to continue to your account</p>
+                <div class="inline-flex items-center justify-center w-10 h-10 bg-indigo-500/10 rounded-full mb-3">
+                    <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                </div>
+                <h1 class="text-lg font-bold text-white mb-1">Reset password</h1>
+                <p class="text-xs text-gray-400">Choose a new password for your account.</p>
             </div>
 
-            @if(session('status'))
-                <div class="mb-4 p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg">
-                    <p class="text-xs text-emerald-400">{{ session('status') }}</p>
-                </div>
-            @endif
-
-            <form method="POST" action="{{ url('/login') }}" class="space-y-3">
+            <form method="POST" action="{{ url('/reset-password') }}" class="space-y-3">
                 @csrf
+                <input type="hidden" name="token" value="{{ $token ?? request()->route('token') }}">
+
                 <div>
                     <label for="email" class="block text-xs font-medium text-gray-400 mb-1.5">Email</label>
-                    <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus
+                    <input type="email" id="email" name="email" value="{{ old('email', request()->email) }}" required
                         class="w-full px-3 py-2.5 bg-[#0a0a0f] border border-[#2a2a30] rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition"
                         placeholder="you@example.com">
                     @error('email')<p class="mt-1 text-[11px] text-red-400">{{ $message }}</p>@enderror
                 </div>
 
                 <div>
-                    <div class="flex items-center justify-between mb-1.5">
-                        <label for="password" class="block text-xs font-medium text-gray-400">Password</label>
-                        <a href="{{ url('/forgot-password') }}" class="text-[11px] text-indigo-400 hover:text-indigo-300 transition">Forgot?</a>
-                    </div>
+                    <label for="password" class="block text-xs font-medium text-gray-400 mb-1.5">New Password</label>
                     <input type="password" id="password" name="password" required
                         class="w-full px-3 py-2.5 bg-[#0a0a0f] border border-[#2a2a30] rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition"
-                        placeholder="Enter your password">
+                        placeholder="At least 8 characters">
                     @error('password')<p class="mt-1 text-[11px] text-red-400">{{ $message }}</p>@enderror
                 </div>
 
-                <label class="flex items-center gap-2 pt-1">
-                    <input type="checkbox" name="remember" class="w-3.5 h-3.5 rounded border-[#2a2a30] bg-[#0a0a0f] text-indigo-500 focus:ring-0 focus:ring-offset-0">
-                    <span class="text-xs text-gray-400">Remember me</span>
-                </label>
+                <div>
+                    <label for="password_confirmation" class="block text-xs font-medium text-gray-400 mb-1.5">Confirm Password</label>
+                    <input type="password" id="password_confirmation" name="password_confirmation" required
+                        class="w-full px-3 py-2.5 bg-[#0a0a0f] border border-[#2a2a30] rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition"
+                        placeholder="Repeat password">
+                </div>
 
-                <button type="submit" class="w-full py-2.5 bg-gradient-to-r from-indigo-500 to-violet-600 text-white text-sm font-medium rounded-lg hover:opacity-90 transition mt-2">
-                    Sign In
+                <button type="submit" class="w-full py-2.5 bg-gradient-to-r from-indigo-500 to-violet-600 text-white text-sm font-medium rounded-lg hover:opacity-90 transition">
+                    Reset Password
                 </button>
             </form>
 
             <div class="mt-4 pt-4 border-t border-[#2a2a30] text-center">
-                <p class="text-xs text-gray-400">
-                    Don't have an account?
-                    <a href="{{ url('/register') }}" class="text-indigo-400 hover:text-indigo-300 font-medium ml-1">Create one</a>
-                </p>
+                <a href="{{ url('/login') }}" class="text-xs text-indigo-400 hover:text-indigo-300 transition">
+                    Back to sign in
+                </a>
             </div>
         </div>
     </div>

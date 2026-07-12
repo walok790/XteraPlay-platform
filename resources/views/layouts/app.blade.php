@@ -2,289 +2,204 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'XteraPlay - Stream & Download Videos')</title>
+    <meta name="theme-color" content="#0a0a0f">
+    <title>@yield('title', 'XteraPlay')</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        'inter': ['Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        html { -webkit-text-size-adjust: 100%; }
+        body { font-family: 'Inter', -apple-system, system-ui, sans-serif; font-size: 14px; }
+        [x-cloak] { display: none !important; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0f; }
+        ::-webkit-scrollbar-thumb { background: #2a2a30; border-radius: 3px; }
     </style>
     @yield('styles')
 </head>
-<body class="bg-[#111113] text-white min-h-screen flex flex-col">
+<body class="bg-[#0a0a0f] text-gray-100 antialiased">
 
-    <!-- Navbar -->
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-[#111113] border-b border-[#2a2a30]" x-data="{ mobileOpen: false, userDropdown: false }">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <!-- Logo -->
-                <div class="flex items-center">
-                    <a href="{{ url('/') }}" class="flex items-center space-x-2">
-                        <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-lg flex items-center justify-center">
-                            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
-                            </svg>
-                        </div>
-                        <span class="text-xl font-bold text-white">XteraPlay</span>
-                    </a>
+<nav x-data="{ open: false, notif: false, user: false }" class="fixed top-0 inset-x-0 z-50 bg-[#0a0a0f]/95 backdrop-blur-md border-b border-[#1e1e2e]">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex items-center justify-between h-14">
+            <a href="{{ url('/') }}" class="flex items-center gap-2">
+                <div class="w-7 h-7 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-lg flex items-center justify-center">
+                    <svg class="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
                 </div>
+                <span class="text-base font-bold">XteraPlay</span>
+            </a>
 
-                <!-- Center Navigation (Desktop) -->
-                <div class="hidden md:flex items-center space-x-4 lg:space-x-6">
-                    @auth
-                        <a href="{{ url('/home') }}" class="text-gray-300 hover:text-white transition text-xs lg:text-sm font-medium">Home</a>
-                    @else
-                        <a href="{{ url('/') }}" class="text-gray-300 hover:text-white transition text-xs lg:text-sm font-medium">Home</a>
-                    @endauth
-                    @auth
-                        <a href="{{ url('/dashboard') }}" class="text-gray-300 hover:text-white transition text-xs lg:text-sm font-medium">Dashboard</a>
-                        <a href="{{ url('/bookmarks') }}" class="hidden lg:inline-block text-gray-300 hover:text-white transition text-xs lg:text-sm font-medium">Bookmarks</a>
-                        <a href="{{ url('/history') }}" class="hidden lg:inline-block text-gray-300 hover:text-white transition text-xs lg:text-sm font-medium">History</a>
-                    @endauth
-                    <a href="{{ url('/subscription') }}" class="text-gray-300 hover:text-white transition text-xs lg:text-sm font-medium">Subscription</a>
-                    <a href="{{ url('/contact') }}" class="hidden lg:inline-block text-gray-300 hover:text-white transition text-xs lg:text-sm font-medium">Contact</a>
-                </div>
-
-                <!-- Right Side -->
-                <div class="hidden md:flex items-center space-x-4">
-                    @guest
-                        <a href="{{ url('/login') }}" class="text-gray-300 hover:text-white transition text-sm font-medium">Sign In</a>
-                        <a href="{{ url('/register') }}" class="px-4 py-2 bg-gradient-to-r from-indigo-500 to-violet-600 text-white text-sm font-medium rounded-lg hover:from-indigo-600 hover:to-violet-700 transition">Get Started</a>
-                    @endguest
-                    @auth
-                        <!-- Notification Bell Dropdown -->
-                        <div class="relative" x-data="{ notifOpen: false }" @click.away="notifOpen = false">
-                            <button @click="notifOpen = !notifOpen" class="relative text-gray-400 hover:text-white transition focus:outline-none">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                                </svg>
-                                <!-- Unread badge -->
-                                <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-[#111113]"></span>
-                            </button>
-                            <!-- Notification Dropdown -->
-                            <div x-show="notifOpen" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute right-0 mt-2 w-80 bg-[#1a1a1f] border border-[#2a2a30] rounded-xl shadow-xl z-50" style="display: none;">
-                                <div class="px-4 py-3 border-b border-[#2a2a30] flex items-center justify-between">
-                                    <p class="text-sm font-semibold text-white">Notifications</p>
-                                    <span class="px-2 py-0.5 bg-red-500/10 text-red-400 text-xs font-medium rounded-full">3 new</span>
-                                </div>
-                                <div class="max-h-64 overflow-y-auto">
-                                    <div class="px-4 py-3 hover:bg-[#2a2a30] transition border-b border-[#2a2a30]">
-                                        <div class="flex items-start space-x-3">
-                                            <div class="w-8 h-8 bg-indigo-500/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                                <svg class="w-4 h-4 text-indigo-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6z"/></svg>
-                                            </div>
-                                            <div>
-                                                <p class="text-sm text-white">Welcome to XteraPlay!</p>
-                                                <p class="text-xs text-gray-500 mt-0.5">2 hours ago</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="px-4 py-3 hover:bg-[#2a2a30] transition border-b border-[#2a2a30]">
-                                        <div class="flex items-start space-x-3">
-                                            <div class="w-8 h-8 bg-green-500/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                                <svg class="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1z" clip-rule="evenodd"/></svg>
-                                            </div>
-                                            <div>
-                                                <p class="text-sm text-white">Your daily credits refreshed</p>
-                                                <p class="text-xs text-gray-500 mt-0.5">5 hours ago</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="px-4 py-3 hover:bg-[#2a2a30] transition">
-                                        <div class="flex items-start space-x-3">
-                                            <div class="w-8 h-8 bg-violet-500/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                                                <svg class="w-4 h-4 text-violet-400" fill="currentColor" viewBox="0 0 20 20"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z"/></svg>
-                                            </div>
-                                            <div>
-                                                <p class="text-sm text-white">New feature: Batch downloads</p>
-                                                <p class="text-xs text-gray-500 mt-0.5">1 day ago</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="px-4 py-3 border-t border-[#2a2a30]">
-                                    <a href="#" class="text-sm text-indigo-400 hover:text-indigo-300 transition font-medium">View All Notifications</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- User Dropdown -->
-                        <div class="relative" @click.away="userDropdown = false">
-                            <button @click="userDropdown = !userDropdown" class="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white text-sm font-semibold focus:outline-none">
-                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                            </button>
-                            <!-- Dropdown Menu -->
-                            <div x-show="userDropdown" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute right-0 mt-2 w-64 bg-[#1a1a1f] border border-[#2a2a30] rounded-xl shadow-xl py-2 z-50" style="display: none;">
-                                <div class="px-4 py-3 border-b border-[#2a2a30]">
-                                    <p class="text-sm font-semibold text-white">{{ Auth::user()->name }}</p>
-                                    <p class="text-xs text-gray-400">{{ Auth::user()->email }}</p>
-                                </div>
-                                <a href="{{ url('/profile') }}" class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-[#2a2a30] hover:text-white transition">
-                                    <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                                    My Profile
-                                </a>
-                                <a href="{{ url('/dashboard') }}" class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-[#2a2a30] hover:text-white transition">
-                                    <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
-                                    Dashboard
-                                </a>
-                                <a href="{{ url('/bookmarks') }}" class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-[#2a2a30] hover:text-white transition">
-                                    <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
-                                    My Bookmarks
-                                </a>
-                                <a href="{{ url('/history') }}" class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-[#2a2a30] hover:text-white transition">
-                                    <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                    My History
-                                </a>
-                                <a href="{{ url('/subscription') }}" class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-[#2a2a30] hover:text-white transition">
-                                    <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
-                                    Upgrade Premium
-                                </a>
-                                <a href="{{ url('/support') }}" class="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-[#2a2a30] hover:text-white transition">
-                                    <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                                    Support
-                                </a>
-                                <div class="border-t border-[#2a2a30] mt-1 pt-1">
-                                    <form method="POST" action="{{ url('/logout') }}">
-                                        @csrf
-                                        <button type="submit" class="flex items-center w-full px-4 py-2 text-sm text-red-400 hover:bg-[#2a2a30] hover:text-red-300 transition">
-                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-                                            Logout
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    @endauth
-                </div>
-
-                <!-- Mobile Hamburger -->
-                <div class="md:hidden">
-                    <button @click="mobileOpen = !mobileOpen" class="text-gray-400 hover:text-white focus:outline-none">
-                        <svg x-show="!mobileOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                        </svg>
-                        <svg x-show="mobileOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mobile Menu -->
-        <div x-show="mobileOpen" x-transition class="md:hidden bg-[#1a1a1f] border-t border-[#2a2a30]" style="display: none;">
-            <div class="px-4 py-4 space-y-1">
+            <div class="hidden md:flex items-center gap-6">
                 @auth
-                    <a href="{{ url('/home') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">Home</a>
+                    <a href="{{ url('/home') }}" class="text-xs text-gray-400 hover:text-white transition">Home</a>
+                    <a href="{{ url('/dashboard') }}" class="text-xs text-gray-400 hover:text-white transition">Dashboard</a>
+                    <a href="{{ url('/bookmarks') }}" class="text-xs text-gray-400 hover:text-white transition">Bookmarks</a>
+                    <a href="{{ url('/history') }}" class="text-xs text-gray-400 hover:text-white transition">History</a>
+                    <a href="{{ url('/subscription') }}" class="text-xs text-gray-400 hover:text-white transition">Plans</a>
                 @else
-                    <a href="{{ url('/') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">Home</a>
+                    <a href="{{ url('/') }}" class="text-xs text-gray-400 hover:text-white transition">Home</a>
+                    <a href="{{ url('/') }}#features" class="text-xs text-gray-400 hover:text-white transition">Features</a>
+                    <a href="{{ url('/') }}#pricing" class="text-xs text-gray-400 hover:text-white transition">Pricing</a>
+                    <a href="{{ url('/') }}#reviews" class="text-xs text-gray-400 hover:text-white transition">Reviews</a>
+                    <a href="{{ url('/contact') }}" class="text-xs text-gray-400 hover:text-white transition">Contact</a>
                 @endauth
-                @auth
-                    <a href="{{ url('/dashboard') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">Dashboard</a>
-                    <a href="{{ url('/bookmarks') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">Bookmarks</a>
-                    <a href="{{ url('/history') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">History</a>
-                @endauth
-                <a href="{{ url('/subscription') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">Subscription</a>
-                <a href="{{ url('/contact') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">Contact</a>
-                @auth
-                    <a href="{{ url('/support') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">Support</a>
-                @endauth
+            </div>
+
+            <div class="hidden md:flex items-center gap-3">
                 @guest
-                    <div class="pt-4 border-t border-[#2a2a30] space-y-1">
-                        <a href="{{ url('/login') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">Sign In</a>
-                        <a href="{{ url('/register') }}" class="block px-3 py-2 text-center bg-gradient-to-r from-indigo-500 to-violet-600 text-white rounded-lg text-sm font-medium">Get Started</a>
-                    </div>
+                    <a href="{{ url('/login') }}" class="text-xs text-gray-400 hover:text-white transition">Sign In</a>
+                    <a href="{{ url('/register') }}" class="px-3.5 py-1.5 bg-gradient-to-r from-indigo-500 to-violet-600 text-white text-xs font-medium rounded-lg hover:opacity-90 transition">Get Started</a>
                 @endguest
                 @auth
-                    <div class="pt-4 border-t border-[#2a2a30] space-y-1">
-                        <a href="{{ url('/profile') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">My Profile</a>
-                        <a href="{{ url('/subscription') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-[#2a2a30] rounded-lg transition text-sm">Upgrade Premium</a>
-                        <form method="POST" action="{{ url('/logout') }}">
-                            @csrf
-                            <button type="submit" class="block w-full text-left px-3 py-2 text-red-400 hover:bg-[#2a2a30] rounded-lg transition text-sm">Logout</button>
-                        </form>
+                    <div class="relative" @click.away="notif = false">
+                        <button @click="notif = !notif" class="relative w-8 h-8 flex items-center justify-center text-gray-400 hover:text-white rounded-lg hover:bg-[#1a1a1f] transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 00-4-5.7V5a2 2 0 10-4 0v.3C7.7 6.2 6 8.4 6 11v3.2c0 .5-.2 1-.6 1.4L4 17h5m6 0v1a3 3 0 11-6 0v-1"/></svg>
+                            <span class="absolute top-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                        </button>
+                        <div x-show="notif" x-cloak x-transition class="absolute right-0 mt-2 w-72 bg-[#12121a] border border-[#2a2a30] rounded-xl shadow-xl overflow-hidden">
+                            <div class="px-3 py-2.5 border-b border-[#2a2a30] flex items-center justify-between">
+                                <p class="text-xs font-semibold">Notifications</p>
+                                <span class="px-1.5 py-0.5 bg-red-500/10 text-red-400 text-[10px] rounded-full">3 new</span>
+                            </div>
+                            <div class="max-h-64 overflow-y-auto">
+                                <div class="px-3 py-2.5 hover:bg-[#1a1a1f] border-b border-[#2a2a30]">
+                                    <p class="text-xs text-white">Welcome to XteraPlay!</p>
+                                    <p class="text-[10px] text-gray-500 mt-0.5">2h ago</p>
+                                </div>
+                                <div class="px-3 py-2.5 hover:bg-[#1a1a1f] border-b border-[#2a2a30]">
+                                    <p class="text-xs text-white">Daily credits refreshed</p>
+                                    <p class="text-[10px] text-gray-500 mt-0.5">5h ago</p>
+                                </div>
+                                <div class="px-3 py-2.5 hover:bg-[#1a1a1f]">
+                                    <p class="text-xs text-white">New feature: Batch downloads</p>
+                                    <p class="text-[10px] text-gray-500 mt-0.5">1d ago</p>
+                                </div>
+                            </div>
+                            <a href="#" class="block px-3 py-2 text-center text-xs text-indigo-400 hover:bg-[#1a1a1f] border-t border-[#2a2a30]">View All</a>
+                        </div>
+                    </div>
+                    <div class="relative" @click.away="user = false">
+                        <button @click="user = !user" class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-xs font-semibold">
+                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                        </button>
+                        <div x-show="user" x-cloak x-transition class="absolute right-0 mt-2 w-56 bg-[#12121a] border border-[#2a2a30] rounded-xl shadow-xl overflow-hidden">
+                            <div class="px-3 py-2.5 border-b border-[#2a2a30]">
+                                <p class="text-xs font-semibold truncate">{{ Auth::user()->name }}</p>
+                                <p class="text-[10px] text-gray-500 truncate">{{ Auth::user()->email }}</p>
+                            </div>
+                            <div class="py-1">
+                                <a href="{{ url('/dashboard') }}" class="block px-3 py-2 text-xs text-gray-300 hover:bg-[#1a1a1f] hover:text-white">Dashboard</a>
+                                <a href="{{ url('/subscription') }}" class="block px-3 py-2 text-xs text-gray-300 hover:bg-[#1a1a1f] hover:text-white">My Plan</a>
+                                <a href="{{ url('/support') }}" class="block px-3 py-2 text-xs text-gray-300 hover:bg-[#1a1a1f] hover:text-white">Support</a>
+                            </div>
+                            <form method="POST" action="{{ url('/logout') }}" class="border-t border-[#2a2a30]">
+                                @csrf
+                                <button type="submit" class="block w-full text-left px-3 py-2 text-xs text-red-400 hover:bg-[#1a1a1f]">Sign Out</button>
+                            </form>
+                        </div>
                     </div>
                 @endauth
             </div>
-        </div>
-    </nav>
 
-    <!-- Main Content -->
-    <main class="flex-1 pt-16">
-        @yield('content')
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-[#111113] border-t border-[#2a2a30] mt-auto">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Brand -->
-                <div>
-                    <a href="{{ url('/') }}" class="flex items-center space-x-2 mb-4">
-                        <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-lg flex items-center justify-center">
-                            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
-                            </svg>
-                        </div>
-                        <span class="text-lg font-bold text-white">XteraPlay</span>
+            <div class="flex items-center gap-2 md:hidden">
+                @auth
+                    <a href="{{ url('/dashboard') }}" class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-xs font-semibold">
+                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                     </a>
-                    <p class="text-gray-400 text-sm mb-4">Stream and download your favorite videos from Terabox with ease. Fast, secure, and reliable.</p>
-                    <div class="flex items-center space-x-3">
-                        <a href="#" class="w-8 h-8 bg-[#1a1a1f] border border-[#2a2a30] rounded-lg flex items-center justify-center text-gray-400 hover:text-white transition">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
-                        </a>
-                        <a href="#" class="w-8 h-8 bg-[#1a1a1f] border border-[#2a2a30] rounded-lg flex items-center justify-center text-gray-400 hover:text-white transition">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                        </a>
-                        <a href="#" class="w-8 h-8 bg-[#1a1a1f] border border-[#2a2a30] rounded-lg flex items-center justify-center text-gray-400 hover:text-white transition">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Product Links -->
-                <div>
-                    <h3 class="text-white font-semibold mb-4">Product</h3>
-                    <ul class="space-y-2">
-                        <li><a href="{{ url('/features') }}" class="text-gray-400 hover:text-white text-sm transition">Features</a></li>
-                        <li><a href="{{ url('/pricing') }}" class="text-gray-400 hover:text-white text-sm transition">Pricing</a></li>
-                        <li><a href="{{ url('/contact') }}" class="text-gray-400 hover:text-white text-sm transition">Contact Us</a></li>
-                    </ul>
-                </div>
-
-                <!-- Legal Links -->
-                <div>
-                    <h3 class="text-white font-semibold mb-4">Legal</h3>
-                    <ul class="space-y-2">
-                        <li><a href="{{ url('/privacy') }}" class="text-gray-400 hover:text-white text-sm transition">Privacy Policy</a></li>
-                        <li><a href="{{ url('/terms') }}" class="text-gray-400 hover:text-white text-sm transition">Terms of Service</a></li>
-                        <li><a href="{{ url('/refund') }}" class="text-gray-400 hover:text-white text-sm transition">Refund Policy</a></li>
-                        <li><a href="{{ url('/dmca') }}" class="text-gray-400 hover:text-white text-sm transition">DMCA</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Bottom Bar -->
-            <div class="mt-10 pt-8 border-t border-[#2a2a30] flex flex-col sm:flex-row items-center justify-between">
-                <p class="text-gray-500 text-sm">&copy; {{ date('Y') }} XteraPlay. All rights reserved.</p>
-                <p class="text-gray-500 text-sm mt-2 sm:mt-0">Powered by <span class="text-gray-400">XteraPlay Platform</span></p>
+                @endauth
+                <button @click="open = !open" class="w-8 h-8 flex items-center justify-center text-gray-400">
+                    <svg x-show="!open" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    <svg x-show="open" x-cloak class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
             </div>
         </div>
-    </footer>
+    </div>
+
+    <div x-show="open" x-cloak x-transition class="md:hidden bg-[#0a0a0f] border-t border-[#1e1e2e]">
+        <div class="px-4 py-3 space-y-1">
+            @auth
+                <a href="{{ url('/home') }}" class="block px-3 py-2 text-sm text-gray-300 hover:bg-[#1a1a1f] rounded-lg">Home</a>
+                <a href="{{ url('/dashboard') }}" class="block px-3 py-2 text-sm text-gray-300 hover:bg-[#1a1a1f] rounded-lg">Dashboard</a>
+                <a href="{{ url('/bookmarks') }}" class="block px-3 py-2 text-sm text-gray-300 hover:bg-[#1a1a1f] rounded-lg">Bookmarks</a>
+                <a href="{{ url('/history') }}" class="block px-3 py-2 text-sm text-gray-300 hover:bg-[#1a1a1f] rounded-lg">History</a>
+                <a href="{{ url('/subscription') }}" class="block px-3 py-2 text-sm text-gray-300 hover:bg-[#1a1a1f] rounded-lg">My Plan</a>
+                <a href="{{ url('/support') }}" class="block px-3 py-2 text-sm text-gray-300 hover:bg-[#1a1a1f] rounded-lg">Support</a>
+                <a href="{{ url('/contact') }}" class="block px-3 py-2 text-sm text-gray-300 hover:bg-[#1a1a1f] rounded-lg">Contact</a>
+                <form method="POST" action="{{ url('/logout') }}" class="pt-2 border-t border-[#1e1e2e]">
+                    @csrf
+                    <button type="submit" class="block w-full text-left px-3 py-2 text-sm text-red-400 hover:bg-[#1a1a1f] rounded-lg">Sign Out</button>
+                </form>
+            @else
+                <a href="{{ url('/') }}" class="block px-3 py-2 text-sm text-gray-300 hover:bg-[#1a1a1f] rounded-lg">Home</a>
+                <a href="{{ url('/') }}#features" class="block px-3 py-2 text-sm text-gray-300 hover:bg-[#1a1a1f] rounded-lg">Features</a>
+                <a href="{{ url('/') }}#pricing" class="block px-3 py-2 text-sm text-gray-300 hover:bg-[#1a1a1f] rounded-lg">Pricing</a>
+                <a href="{{ url('/') }}#reviews" class="block px-3 py-2 text-sm text-gray-300 hover:bg-[#1a1a1f] rounded-lg">Reviews</a>
+                <a href="{{ url('/contact') }}" class="block px-3 py-2 text-sm text-gray-300 hover:bg-[#1a1a1f] rounded-lg">Contact</a>
+                <div class="pt-2 border-t border-[#1e1e2e] space-y-1">
+                    <a href="{{ url('/login') }}" class="block px-3 py-2 text-sm text-gray-300 hover:bg-[#1a1a1f] rounded-lg">Sign In</a>
+                    <a href="{{ url('/register') }}" class="block px-3 py-2 text-center text-sm font-medium bg-gradient-to-r from-indigo-500 to-violet-600 text-white rounded-lg">Get Started</a>
+                </div>
+            @endauth
+        </div>
+    </div>
+</nav>
+
+<main class="pt-14">
+    @yield('content')
+</main>
+
+<footer class="border-t border-[#1e1e2e] bg-[#0a0a0f] mt-12">
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
+            <div class="col-span-2">
+                <a href="{{ url('/') }}" class="flex items-center gap-2 mb-3">
+                    <div class="w-7 h-7 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-lg flex items-center justify-center">
+                        <svg class="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/></svg>
+                    </div>
+                    <span class="text-sm font-bold">XteraPlay</span>
+                </a>
+                <p class="text-xs text-gray-500 leading-relaxed max-w-xs">Stream and download videos from Terabox. Fast, secure, reliable.</p>
+                <div class="flex items-center gap-2 mt-3">
+                    <a href="#" class="w-7 h-7 bg-[#12121a] border border-[#2a2a30] rounded-lg flex items-center justify-center text-gray-400 hover:text-white transition">
+                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                    </a>
+                    <a href="#" class="w-7 h-7 bg-[#12121a] border border-[#2a2a30] rounded-lg flex items-center justify-center text-gray-400 hover:text-white transition">
+                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                    <a href="#" class="w-7 h-7 bg-[#12121a] border border-[#2a2a30] rounded-lg flex items-center justify-center text-gray-400 hover:text-white transition">
+                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-xs font-semibold text-white mb-3">Product</h4>
+                <ul class="space-y-2">
+                    <li><a href="{{ url('/') }}#features" class="text-xs text-gray-500 hover:text-white transition">Features</a></li>
+                    <li><a href="{{ url('/') }}#pricing" class="text-xs text-gray-500 hover:text-white transition">Pricing</a></li>
+                    <li><a href="{{ url('/') }}#reviews" class="text-xs text-gray-500 hover:text-white transition">Reviews</a></li>
+                    <li><a href="{{ url('/contact') }}" class="text-xs text-gray-500 hover:text-white transition">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-xs font-semibold text-white mb-3">Legal</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-xs text-gray-500 hover:text-white transition">Privacy</a></li>
+                    <li><a href="#" class="text-xs text-gray-500 hover:text-white transition">Terms</a></li>
+                    <li><a href="#" class="text-xs text-gray-500 hover:text-white transition">Refund</a></li>
+                    <li><a href="#" class="text-xs text-gray-500 hover:text-white transition">DMCA</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="pt-4 border-t border-[#1e1e2e] flex flex-col sm:flex-row items-center justify-between gap-2">
+            <p class="text-[11px] text-gray-500">&copy; {{ date('Y') }} XteraPlay. All rights reserved.</p>
+            <p class="text-[11px] text-gray-500">Powered by XteraPlay Platform</p>
+        </div>
+    </div>
+</footer>
 
 </body>
 </html>
