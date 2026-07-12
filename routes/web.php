@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InstallerController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
@@ -21,6 +22,21 @@ use App\Http\Controllers\Admin\SubscriptionController;
 use App\Http\Controllers\Admin\TicketController as AdminTicketController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
+
+// ============ INSTALLER ============
+Route::prefix('install')->group(function () {
+    Route::get('/', [InstallerController::class, 'welcome']);
+    Route::get('/requirements', [InstallerController::class, 'requirements'])->name('install.requirements');
+    Route::get('/permissions', [InstallerController::class, 'permissions'])->name('install.permissions');
+    Route::get('/database', [InstallerController::class, 'database'])->name('install.database');
+    Route::post('/database', [InstallerController::class, 'testDatabase']);
+    Route::get('/mode', [InstallerController::class, 'mode'])->name('install.mode');
+    Route::post('/mode', [InstallerController::class, 'saveMode']);
+    Route::get('/admin', [InstallerController::class, 'admin'])->name('install.admin');
+    Route::post('/admin', [InstallerController::class, 'saveAdmin']);
+    Route::get('/import', [InstallerController::class, 'import'])->name('install.import');
+    Route::post('/import/run', [InstallerController::class, 'runImport'])->name('install.import.run');
+});
 
 // ============ PUBLIC ============
 Route::get('/', [LandingPageController::class, 'index'])->name('home.landing');
