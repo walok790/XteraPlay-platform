@@ -1,320 +1,295 @@
 @extends('layouts.app')
 
+@section('title', 'XteraPlay - Stream & Download Videos from Terabox')
+
 @section('content')
-
 <!-- Hero Section -->
-<section id="home" class="relative pt-28 pb-16 sm:pb-24 overflow-hidden">
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(99,102,241,0.08)_0%,_transparent_70%)]"></div>
-    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight tracking-tight">
-            Stream TeraBox Videos <span class="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">Instantly</span>
-        </h1>
-        <p class="mt-4 text-base sm:text-lg text-gray-400 max-w-2xl mx-auto">
-            Paste your TeraBox link and start watching immediately. No downloads, no waiting — just smooth, instant playback.
-        </p>
+<section class="py-20 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">Terabox Search</h1>
+        <p class="text-gray-400 text-lg md:text-xl mb-8">Paste a link to stream or download — no signup required</p>
 
-        <div x-data="{ url: '' }" class="mt-8 max-w-xl mx-auto">
-            <div class="flex items-center bg-[#12121a] border border-[#1e1e2e] rounded-xl p-1.5 focus-within:border-indigo-500/50 transition-colors">
-                <input
-                    x-model="url"
-                    type="text"
-                    placeholder="Paste your TeraBox link here..."
-                    class="flex-1 bg-transparent px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none"
-                >
-                <button
-                    :disabled="!url.trim()"
-                    :class="url.trim() ? 'bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 shadow-lg shadow-indigo-500/25' : 'bg-gray-700 cursor-not-allowed'"
-                    class="px-5 py-2.5 text-sm font-medium text-white rounded-lg transition-all duration-200"
-                >
-                    Watch Now
-                </button>
+        <!-- Daily Credits Badge -->
+        <div class="inline-flex items-center px-4 py-2 bg-[#1a1a1f] border border-[#2a2a30] rounded-full mb-8">
+            <svg class="w-4 h-4 text-amber-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"/>
+            </svg>
+            <span class="text-sm text-gray-300">Daily Credits: <span class="text-amber-500 font-semibold">5/5</span></span>
+        </div>
+
+
+        <!-- URL Input -->
+        <div class="flex flex-col sm:flex-row items-stretch gap-3 max-w-2xl mx-auto mb-6">
+            <input type="text" placeholder="Paste your Terabox link here..." class="flex-1 px-5 py-4 bg-[#111113] border border-[#2a2a30] rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 transition text-sm">
+            <button class="px-8 py-4 bg-gradient-to-r from-indigo-500 to-violet-600 text-white font-semibold rounded-xl hover:from-indigo-600 hover:to-violet-700 transition whitespace-nowrap">Watch Now</button>
+        </div>
+
+        <!-- Upsell Banner -->
+        <div class="max-w-xl mx-auto bg-[#1a1a1f] border border-[#2a2a30] rounded-xl p-4 mb-8">
+            <p class="text-gray-400 text-sm mb-3">Want more daily searches?</p>
+            <div class="flex items-center justify-center gap-3">
+                <a href="{{ url('/register') }}" class="px-4 py-2 bg-gradient-to-r from-indigo-500 to-violet-600 text-white text-sm font-medium rounded-lg hover:from-indigo-600 hover:to-violet-700 transition">Sign Up Free</a>
+                <a href="{{ url('/login') }}" class="px-4 py-2 bg-[#111113] border border-[#2a2a30] text-gray-300 text-sm font-medium rounded-lg hover:border-gray-500 transition">Login</a>
             </div>
         </div>
 
-        <p class="mt-4 text-sm text-gray-500">5 free streams daily — no signup needed</p>
+        <!-- Feature Pills -->
+        <div class="flex flex-wrap items-center justify-center gap-3">
+            <div class="flex items-center px-3 py-1.5 bg-[#1a1a1f] border border-[#2a2a30] rounded-full">
+                <svg class="w-3.5 h-3.5 text-amber-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/></svg>
+                <span class="text-xs text-gray-300">Instant</span>
+            </div>
+            <div class="flex items-center px-3 py-1.5 bg-[#1a1a1f] border border-[#2a2a30] rounded-full">
+                <svg class="w-3.5 h-3.5 text-emerald-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
+                <span class="text-xs text-gray-300">Secure</span>
+            </div>
+            <div class="flex items-center px-3 py-1.5 bg-[#1a1a1f] border border-[#2a2a30] rounded-full">
+                <svg class="w-3.5 h-3.5 text-blue-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/></svg>
+                <span class="text-xs text-gray-300">HD Quality</span>
+            </div>
+            <div class="flex items-center px-3 py-1.5 bg-[#1a1a1f] border border-[#2a2a30] rounded-full">
+                <svg class="w-3.5 h-3.5 text-purple-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7 2a2 2 0 00-2 2v12a2 2 0 002 2h6a2 2 0 002-2V4a2 2 0 00-2-2H7zm3 14a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
+                <span class="text-xs text-gray-300">Mobile Ready</span>
+            </div>
+        </div>
     </div>
 </section>
 
-<!-- Features Section -->
-<section id="features" class="py-16 sm:py-24">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+<!-- Services Section -->
+<section class="py-20 px-4">
+    <div class="max-w-6xl mx-auto">
         <div class="text-center mb-12">
-            <h2 class="text-3xl sm:text-4xl font-bold text-white">Why Choose XteraPlay</h2>
-            <p class="mt-3 text-gray-400 text-base max-w-xl mx-auto">Everything you need for the best TeraBox streaming experience.</p>
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Everything You Need</h2>
+            <p class="text-gray-400 max-w-2xl mx-auto">Powerful tools to stream, download, and manage your Terabox content effortlessly.</p>
         </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Lightning Fast -->
-            <div class="bg-[#12121a] border border-[#1e1e2e] rounded-xl p-6 hover:border-indigo-500/30 transition-colors">
-                <div class="w-10 h-10 bg-indigo-500/10 rounded-lg flex items-center justify-center mb-4">
-                    <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                    </svg>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Card 1: Video Downloads -->
+            <div class="bg-[#1a1a1f] border border-[#2a2a30] rounded-2xl p-6 hover:border-[#3a3a40] transition">
+                <div class="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                 </div>
-                <h3 class="text-white font-semibold text-lg">Lightning Fast</h3>
-                <p class="mt-2 text-gray-400 text-sm leading-relaxed">Start streaming in seconds with our optimized video delivery infrastructure.</p>
+                <h3 class="text-white font-semibold text-lg mb-2">Video Downloads</h3>
+                <p class="text-gray-400 text-sm">Download videos directly from Terabox links in multiple quality options.</p>
             </div>
-
-            <!-- HD Quality -->
-            <div class="bg-[#12121a] border border-[#1e1e2e] rounded-xl p-6 hover:border-indigo-500/30 transition-colors">
-                <div class="w-10 h-10 bg-violet-500/10 rounded-lg flex items-center justify-center mb-4">
-                    <svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                    </svg>
+            <!-- Card 2: Online Streaming -->
+            <div class="bg-[#1a1a1f] border border-[#2a2a30] rounded-2xl p-6 hover:border-[#3a3a40] transition">
+                <div class="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
-                <h3 class="text-white font-semibold text-lg">HD Quality</h3>
-                <p class="mt-2 text-gray-400 text-sm leading-relaxed">Watch videos in full HD quality with adaptive bitrate streaming.</p>
+                <h3 class="text-white font-semibold text-lg mb-2">Online Streaming</h3>
+                <p class="text-gray-400 text-sm">Stream videos directly in your browser without downloading large files.</p>
             </div>
-
-            <!-- Secure & Private -->
-            <div class="bg-[#12121a] border border-[#1e1e2e] rounded-xl p-6 hover:border-indigo-500/30 transition-colors">
-                <div class="w-10 h-10 bg-indigo-500/10 rounded-lg flex items-center justify-center mb-4">
-                    <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                    </svg>
+            <!-- Card 3: Link Converter -->
+            <div class="bg-[#1a1a1f] border border-[#2a2a30] rounded-2xl p-6 hover:border-[#3a3a40] transition">
+                <div class="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
                 </div>
-                <h3 class="text-white font-semibold text-lg">Secure & Private</h3>
-                <p class="mt-2 text-gray-400 text-sm leading-relaxed">Your activity stays private. We don't store your links or viewing history on our servers.</p>
+                <h3 class="text-white font-semibold text-lg mb-2">Link Converter</h3>
+                <p class="text-gray-400 text-sm">Convert Terabox sharing links into direct downloadable URLs instantly.</p>
             </div>
-
-            <!-- Mobile Friendly -->
-            <div class="bg-[#12121a] border border-[#1e1e2e] rounded-xl p-6 hover:border-indigo-500/30 transition-colors">
-                <div class="w-10 h-10 bg-violet-500/10 rounded-lg flex items-center justify-center mb-4">
-                    <svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                    </svg>
+            <!-- Card 4: Batch Processing -->
+            <div class="bg-[#1a1a1f] border border-[#2a2a30] rounded-2xl p-6 hover:border-[#3a3a40] transition">
+                <div class="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
                 </div>
-                <h3 class="text-white font-semibold text-lg">Mobile Friendly</h3>
-                <p class="mt-2 text-gray-400 text-sm leading-relaxed">Fully responsive player that works beautifully on any device or screen size.</p>
+                <h3 class="text-white font-semibold text-lg mb-2">Batch Processing</h3>
+                <p class="text-gray-400 text-sm">Process multiple links at once and download them in bulk efficiently.</p>
             </div>
-
-            <!-- Batch Downloads -->
-            <div class="bg-[#12121a] border border-[#1e1e2e] rounded-xl p-6 hover:border-indigo-500/30 transition-colors">
-                <div class="w-10 h-10 bg-indigo-500/10 rounded-lg flex items-center justify-center mb-4">
-                    <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                    </svg>
+            <!-- Card 5: Developer API -->
+            <div class="bg-[#1a1a1f] border border-[#2a2a30] rounded-2xl p-6 hover:border-[#3a3a40] transition">
+                <div class="w-12 h-12 bg-pink-500/10 rounded-xl flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
                 </div>
-                <h3 class="text-white font-semibold text-lg">Batch Downloads</h3>
-                <p class="mt-2 text-gray-400 text-sm leading-relaxed">Download multiple files at once from TeraBox folders with a single click.</p>
+                <h3 class="text-white font-semibold text-lg mb-2">Developer API</h3>
+                <p class="text-gray-400 text-sm">Integrate XteraPlay into your own applications with our RESTful API.</p>
             </div>
-
-            <!-- Watch History -->
-            <div class="bg-[#12121a] border border-[#1e1e2e] rounded-xl p-6 hover:border-indigo-500/30 transition-colors">
-                <div class="w-10 h-10 bg-violet-500/10 rounded-lg flex items-center justify-center mb-4">
-                    <svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
+            <!-- Card 6: Privacy First -->
+            <div class="bg-[#1a1a1f] border border-[#2a2a30] rounded-2xl p-6 hover:border-[#3a3a40] transition">
+                <div class="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center mb-4">
+                    <svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                 </div>
-                <h3 class="text-white font-semibold text-lg">Watch History</h3>
-                <p class="mt-2 text-gray-400 text-sm leading-relaxed">Keep track of everything you've watched and easily resume where you left off.</p>
+                <h3 class="text-white font-semibold text-lg mb-2">Privacy First</h3>
+                <p class="text-gray-400 text-sm">Your data stays private. We never store your links or personal info.</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Supported Platforms Section -->
-<section class="py-16 sm:py-24">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-3xl sm:text-4xl font-bold text-white">Supported Platforms</h2>
-        <p class="mt-3 text-gray-400 text-base max-w-xl mx-auto">Works with all major TeraBox domains and mirrors.</p>
 
-        <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <span class="px-4 py-2 bg-[#12121a] border border-[#1e1e2e] rounded-full text-sm text-gray-300 font-medium">terabox.com</span>
-            <span class="px-4 py-2 bg-[#12121a] border border-[#1e1e2e] rounded-full text-sm text-gray-300 font-medium">1024terabox.com</span>
-            <span class="px-4 py-2 bg-[#12121a] border border-[#1e1e2e] rounded-full text-sm text-gray-300 font-medium">teraboxapp.com</span>
-            <span class="px-4 py-2 bg-[#12121a] border border-[#1e1e2e] rounded-full text-sm text-gray-300 font-medium">teraboxshare.com</span>
-            <span class="px-4 py-2 bg-[#12121a] border border-[#1e1e2e] rounded-full text-sm text-gray-300 font-medium">freeterabox.com</span>
-            <span class="px-4 py-2 bg-[#12121a] border border-[#1e1e2e] rounded-full text-sm text-gray-300 font-medium">mirrobox.com</span>
+<!-- Why XteraPlay Section -->
+<section class="py-20 px-4 bg-[#0d0d0f]">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Why XteraPlay?</h2>
+            <p class="text-gray-400 max-w-2xl mx-auto">The best way to access your Terabox content with powerful features.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="bg-[#1a1a1f] border border-[#2a2a30] rounded-2xl p-6">
+                <div class="w-10 h-10 bg-amber-500/10 rounded-lg flex items-center justify-center mb-3">
+                    <svg class="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/></svg>
+                </div>
+                <h3 class="text-white font-semibold mb-2">Lightning Fast</h3>
+                <p class="text-gray-400 text-sm">Get your download links in seconds with our optimized servers.</p>
+            </div>
+            <div class="bg-[#1a1a1f] border border-[#2a2a30] rounded-2xl p-6">
+                <div class="w-10 h-10 bg-emerald-500/10 rounded-lg flex items-center justify-center mb-3">
+                    <svg class="w-5 h-5 text-emerald-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/></svg>
+                </div>
+                <h3 class="text-white font-semibold mb-2">Private & Secure</h3>
+                <p class="text-gray-400 text-sm">End-to-end encryption ensures your activity remains private.</p>
+            </div>
+            <div class="bg-[#1a1a1f] border border-[#2a2a30] rounded-2xl p-6">
+                <div class="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center mb-3">
+                    <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/></svg>
+                </div>
+                <h3 class="text-white font-semibold mb-2">HD Quality</h3>
+                <p class="text-gray-400 text-sm">Stream and download in full HD quality without compression.</p>
+            </div>
+            <div class="bg-[#1a1a1f] border border-[#2a2a30] rounded-2xl p-6">
+                <div class="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center mb-3">
+                    <svg class="w-5 h-5 text-purple-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7 2a2 2 0 00-2 2v12a2 2 0 002 2h6a2 2 0 002-2V4a2 2 0 00-2-2H7zm3 14a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
+                </div>
+                <h3 class="text-white font-semibold mb-2">Mobile Friendly</h3>
+                <p class="text-gray-400 text-sm">Fully responsive design works perfectly on any device.</p>
+            </div>
+            <div class="bg-[#1a1a1f] border border-[#2a2a30] rounded-2xl p-6">
+                <div class="w-10 h-10 bg-pink-500/10 rounded-lg flex items-center justify-center mb-3">
+                    <svg class="w-5 h-5 text-pink-500" fill="currentColor" viewBox="0 0 20 20"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"/></svg>
+                </div>
+                <h3 class="text-white font-semibold mb-2">Bookmarks</h3>
+                <p class="text-gray-400 text-sm">Save your favorite videos and access them anytime later.</p>
+            </div>
+            <div class="bg-[#1a1a1f] border border-[#2a2a30] rounded-2xl p-6">
+                <div class="w-10 h-10 bg-indigo-500/10 rounded-lg flex items-center justify-center mb-3">
+                    <svg class="w-5 h-5 text-indigo-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>
+                </div>
+                <h3 class="text-white font-semibold mb-2">Watch History</h3>
+                <p class="text-gray-400 text-sm">Keep track of everything you've watched with detailed history.</p>
+            </div>
         </div>
     </div>
 </section>
+
 
 <!-- Pricing Section -->
-<section id="pricing" class="py-16 sm:py-24">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<section class="py-20 px-4">
+    <div class="max-w-6xl mx-auto">
         <div class="text-center mb-12">
-            <h2 class="text-3xl sm:text-4xl font-bold text-white">Simple Pricing</h2>
-            <p class="mt-3 text-gray-400 text-base max-w-xl mx-auto">Choose the plan that works best for you.</p>
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Simple Pricing</h2>
+            <p class="text-gray-400 max-w-2xl mx-auto">Choose the plan that fits your needs. Upgrade or downgrade anytime.</p>
         </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             <!-- Free Plan -->
-            <div class="bg-[#12121a] border border-[#1e1e2e] rounded-xl p-6">
-                <h3 class="text-white font-semibold text-lg">Free</h3>
-                <div class="mt-4">
+            <div class="bg-[#1a1a1f] border border-[#2a2a30] rounded-2xl p-8">
+                <h3 class="text-white font-semibold text-lg mb-1">Free</h3>
+                <div class="mb-4">
                     <span class="text-4xl font-bold text-white">$0</span>
-                    <span class="text-gray-500 text-sm">/month</span>
+                    <span class="text-gray-400 text-sm">/forever</span>
                 </div>
-                <ul class="mt-6 space-y-3">
-                    <li class="flex items-center text-sm text-gray-400">
-                        <svg class="w-4 h-4 text-indigo-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                        5 streams per day
+                <p class="text-gray-400 text-sm mb-6">Perfect for casual users who need basic access.</p>
+                <a href="{{ url('/register') }}" class="block w-full py-3 px-4 bg-[#111113] border border-[#2a2a30] text-white text-center text-sm font-medium rounded-xl hover:border-gray-500 transition mb-6">Get Started</a>
+                <ul class="space-y-3">
+                    <li class="flex items-center text-sm text-gray-300">
+                        <svg class="w-4 h-4 text-emerald-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                        5 daily searches
                     </li>
-                    <li class="flex items-center text-sm text-gray-400">
-                        <svg class="w-4 h-4 text-indigo-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                        720p quality
+                    <li class="flex items-center text-sm text-gray-300">
+                        <svg class="w-4 h-4 text-emerald-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                        Online streaming
                     </li>
-                    <li class="flex items-center text-sm text-gray-400">
-                        <svg class="w-4 h-4 text-indigo-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                        Basic support
+                    <li class="flex items-center text-sm text-gray-300">
+                        <svg class="w-4 h-4 text-emerald-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                        Basic quality
+                    </li>
+                    <li class="flex items-center text-sm text-gray-300">
+                        <svg class="w-4 h-4 text-emerald-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                        Bookmarks
                     </li>
                 </ul>
-                <a href="{{ url('/register') }}" class="mt-6 block w-full text-center px-4 py-2.5 border border-[#1e1e2e] text-white text-sm font-medium rounded-lg hover:bg-[#1e1e2e] transition-colors">
-                    Get Started
-                </a>
             </div>
 
-            <!-- Pro Plan -->
-            <div class="relative bg-[#12121a] border border-indigo-500/50 rounded-xl p-6">
-                <span class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-gradient-to-r from-indigo-500 to-violet-500 text-white text-xs font-semibold rounded-full">Popular</span>
-                <h3 class="text-white font-semibold text-lg">Pro</h3>
-                <div class="mt-4">
+
+            <!-- Pro Plan (Most Popular) -->
+            <div class="bg-[#1a1a1f] border-2 border-indigo-500 rounded-2xl p-8 relative">
+                <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-gradient-to-r from-indigo-500 to-violet-600 text-white text-xs font-semibold rounded-full">MOST POPULAR</div>
+                <h3 class="text-white font-semibold text-lg mb-1">Pro</h3>
+                <div class="mb-4">
                     <span class="text-4xl font-bold text-white">$9</span>
-                    <span class="text-gray-500 text-sm">/month</span>
+                    <span class="text-gray-400 text-sm">/month</span>
                 </div>
-                <ul class="mt-6 space-y-3">
-                    <li class="flex items-center text-sm text-gray-400">
-                        <svg class="w-4 h-4 text-indigo-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                        Unlimited streams
+                <p class="text-gray-400 text-sm mb-6">For power users who need unlimited access and features.</p>
+                <a href="{{ url('/register') }}" class="block w-full py-3 px-4 bg-gradient-to-r from-indigo-500 to-violet-600 text-white text-center text-sm font-medium rounded-xl hover:from-indigo-600 hover:to-violet-700 transition mb-6">Get Started</a>
+                <ul class="space-y-3">
+                    <li class="flex items-center text-sm text-gray-300">
+                        <svg class="w-4 h-4 text-emerald-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                        Unlimited searches
                     </li>
-                    <li class="flex items-center text-sm text-gray-400">
-                        <svg class="w-4 h-4 text-indigo-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                        1080p HD quality
+                    <li class="flex items-center text-sm text-gray-300">
+                        <svg class="w-4 h-4 text-emerald-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                        HD streaming & downloads
                     </li>
-                    <li class="flex items-center text-sm text-gray-400">
-                        <svg class="w-4 h-4 text-indigo-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                        Batch downloads
+                    <li class="flex items-center text-sm text-gray-300">
+                        <svg class="w-4 h-4 text-emerald-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                        Batch processing
                     </li>
-                    <li class="flex items-center text-sm text-gray-400">
-                        <svg class="w-4 h-4 text-indigo-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    <li class="flex items-center text-sm text-gray-300">
+                        <svg class="w-4 h-4 text-emerald-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
                         Priority support
                     </li>
+                    <li class="flex items-center text-sm text-gray-300">
+                        <svg class="w-4 h-4 text-emerald-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                        No ads
+                    </li>
                 </ul>
-                <a href="{{ url('/register') }}" class="mt-6 block w-full text-center px-4 py-2.5 bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white text-sm font-medium rounded-lg transition-all duration-200 shadow-lg shadow-indigo-500/25">
-                    Get Started
-                </a>
             </div>
+
 
             <!-- Enterprise Plan -->
-            <div class="bg-[#12121a] border border-[#1e1e2e] rounded-xl p-6">
-                <h3 class="text-white font-semibold text-lg">Enterprise</h3>
-                <div class="mt-4">
-                    <span class="text-4xl font-bold text-white">$25</span>
-                    <span class="text-gray-500 text-sm">/month</span>
+            <div class="bg-[#1a1a1f] border border-[#2a2a30] rounded-2xl p-8">
+                <h3 class="text-white font-semibold text-lg mb-1">Enterprise</h3>
+                <div class="mb-4">
+                    <span class="text-4xl font-bold text-white">$29</span>
+                    <span class="text-gray-400 text-sm">/month</span>
                 </div>
-                <ul class="mt-6 space-y-3">
-                    <li class="flex items-center text-sm text-gray-400">
-                        <svg class="w-4 h-4 text-indigo-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <p class="text-gray-400 text-sm mb-6">For teams and businesses that need API access and more.</p>
+                <a href="{{ url('/register') }}" class="block w-full py-3 px-4 bg-[#111113] border border-[#2a2a30] text-white text-center text-sm font-medium rounded-xl hover:border-gray-500 transition mb-6">Get Started</a>
+                <ul class="space-y-3">
+                    <li class="flex items-center text-sm text-gray-300">
+                        <svg class="w-4 h-4 text-emerald-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
                         Everything in Pro
                     </li>
-                    <li class="flex items-center text-sm text-gray-400">
-                        <svg class="w-4 h-4 text-indigo-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                        4K streaming
-                    </li>
-                    <li class="flex items-center text-sm text-gray-400">
-                        <svg class="w-4 h-4 text-indigo-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    <li class="flex items-center text-sm text-gray-300">
+                        <svg class="w-4 h-4 text-emerald-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
                         API access
                     </li>
-                    <li class="flex items-center text-sm text-gray-400">
-                        <svg class="w-4 h-4 text-indigo-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    <li class="flex items-center text-sm text-gray-300">
+                        <svg class="w-4 h-4 text-emerald-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
                         Dedicated support
                     </li>
+                    <li class="flex items-center text-sm text-gray-300">
+                        <svg class="w-4 h-4 text-emerald-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                        Custom integrations
+                    </li>
+                    <li class="flex items-center text-sm text-gray-300">
+                        <svg class="w-4 h-4 text-emerald-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                        SLA guarantee
+                    </li>
                 </ul>
-                <a href="{{ url('/register') }}" class="mt-6 block w-full text-center px-4 py-2.5 border border-[#1e1e2e] text-white text-sm font-medium rounded-lg hover:bg-[#1e1e2e] transition-colors">
-                    Get Started
-                </a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- FAQ Section -->
-<section id="faq" class="py-16 sm:py-24">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl sm:text-4xl font-bold text-white">Frequently Asked Questions</h2>
-            <p class="mt-3 text-gray-400 text-base">Got questions? We've got answers.</p>
-        </div>
-
-        <div class="space-y-3" x-data="{ active: null }">
-            <!-- FAQ Item 1 -->
-            <div class="bg-[#12121a] border border-[#1e1e2e] rounded-xl overflow-hidden">
-                <button @click="active = active === 1 ? null : 1" class="w-full flex items-center justify-between p-5 text-left">
-                    <span class="text-white font-medium text-sm">How does XteraPlay work?</span>
-                    <svg class="w-4 h-4 text-gray-400 transition-transform" :class="active === 1 ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                    </svg>
-                </button>
-                <div x-show="active === 1" x-collapse>
-                    <p class="px-5 pb-5 text-sm text-gray-400 leading-relaxed">Simply paste your TeraBox video link into the input field and click "Watch Now". Our system processes the link and delivers the video stream directly to your browser — no downloads required.</p>
-                </div>
-            </div>
-
-            <!-- FAQ Item 2 -->
-            <div class="bg-[#12121a] border border-[#1e1e2e] rounded-xl overflow-hidden">
-                <button @click="active = active === 2 ? null : 2" class="w-full flex items-center justify-between p-5 text-left">
-                    <span class="text-white font-medium text-sm">Is it free to use?</span>
-                    <svg class="w-4 h-4 text-gray-400 transition-transform" :class="active === 2 ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                    </svg>
-                </button>
-                <div x-show="active === 2" x-collapse>
-                    <p class="px-5 pb-5 text-sm text-gray-400 leading-relaxed">Yes! You can stream up to 5 videos per day completely free with no signup required. For unlimited streams and HD quality, check out our Pro and Enterprise plans.</p>
-                </div>
-            </div>
-
-            <!-- FAQ Item 3 -->
-            <div class="bg-[#12121a] border border-[#1e1e2e] rounded-xl overflow-hidden">
-                <button @click="active = active === 3 ? null : 3" class="w-full flex items-center justify-between p-5 text-left">
-                    <span class="text-white font-medium text-sm">Which TeraBox domains are supported?</span>
-                    <svg class="w-4 h-4 text-gray-400 transition-transform" :class="active === 3 ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                    </svg>
-                </button>
-                <div x-show="active === 3" x-collapse>
-                    <p class="px-5 pb-5 text-sm text-gray-400 leading-relaxed">We support all major TeraBox domains including terabox.com, 1024terabox.com, teraboxapp.com, teraboxshare.com, freeterabox.com, and mirrobox.com.</p>
-                </div>
-            </div>
-
-            <!-- FAQ Item 4 -->
-            <div class="bg-[#12121a] border border-[#1e1e2e] rounded-xl overflow-hidden">
-                <button @click="active = active === 4 ? null : 4" class="w-full flex items-center justify-between p-5 text-left">
-                    <span class="text-white font-medium text-sm">Is my data safe and private?</span>
-                    <svg class="w-4 h-4 text-gray-400 transition-transform" :class="active === 4 ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                    </svg>
-                </button>
-                <div x-show="active === 4" x-collapse>
-                    <p class="px-5 pb-5 text-sm text-gray-400 leading-relaxed">Absolutely. We don't store your video links or track your viewing habits. All streams are processed in real-time and nothing is saved on our servers.</p>
-                </div>
-            </div>
-
-            <!-- FAQ Item 5 -->
-            <div class="bg-[#12121a] border border-[#1e1e2e] rounded-xl overflow-hidden">
-                <button @click="active = active === 5 ? null : 5" class="w-full flex items-center justify-between p-5 text-left">
-                    <span class="text-white font-medium text-sm">Can I download videos?</span>
-                    <svg class="w-4 h-4 text-gray-400 transition-transform" :class="active === 5 ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                    </svg>
-                </button>
-                <div x-show="active === 5" x-collapse>
-                    <p class="px-5 pb-5 text-sm text-gray-400 leading-relaxed">Yes, Pro and Enterprise users can download videos directly. The batch download feature lets you grab multiple files from TeraBox folders in one go.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
 <!-- CTA Section -->
-<section class="py-16 sm:py-24">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-3xl sm:text-4xl font-bold text-white">Ready to start?</h2>
-        <p class="mt-3 text-gray-400 text-base">Join thousands of users streaming TeraBox videos effortlessly.</p>
-        <a href="{{ url('/register') }}" class="mt-6 inline-block px-8 py-3 bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white font-medium rounded-lg transition-all duration-200 shadow-lg shadow-indigo-500/25">
-            Get Started Free
-        </a>
+<section class="py-20 px-4">
+    <div class="max-w-3xl mx-auto text-center">
+        <div class="bg-[#1a1a1f] border border-[#2a2a30] rounded-2xl p-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Ready to start?</h2>
+            <p class="text-gray-400 mb-8">Join thousands of users who trust XteraPlay for their Terabox needs.</p>
+            <a href="{{ url('/register') }}" class="inline-block px-8 py-4 bg-gradient-to-r from-indigo-500 to-violet-600 text-white font-semibold rounded-xl hover:from-indigo-600 hover:to-violet-700 transition">Get Started for Free</a>
+        </div>
     </div>
 </section>
-
 @endsection
